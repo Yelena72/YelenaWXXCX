@@ -1,0 +1,95 @@
+<!-- pages/skills/skills.wxml —— 想学的技能 -->
+
+<view class="page-wrap">
+
+  <!-- 概览 -->
+  <view class="px-card summary" hover-class="px-card-hover">
+    <view class="sum-item">
+      <view class="sum-label">正在学的</view>
+      <view class="sum-num">{{list.length}}<text class="sum-unit">项</text></view>
+    </view>
+    <view class="sum-divider"></view>
+    <view class="sum-item">
+      <view class="sum-label">平均进度</view>
+      <view class="sum-num">{{avg}}<text class="sum-unit">%</text></view>
+    </view>
+  </view>
+
+  <!-- 技能列表 -->
+  <view class="px-card skill" wx:for="{{list}}" wx:key="id" hover-class="px-card-hover">
+    <view class="head">
+      <view class="name">{{item.name}}</view>
+      <view class="pct">{{item.percent}}%</view>
+    </view>
+
+    <view class="bar">
+      <view class="fill" style="width: {{item.percent}}%; background-color: {{item.color}};"></view>
+    </view>
+
+    <view wx:if="{{item.note}}" class="note">{{item.note}}</view>
+
+    <view class="ops">
+      <view class="op" data-id="{{item.id}}" bindtap="edit">修改</view>
+      <view class="op op-del" data-id="{{item.id}}" bindtap="remove">删除</view>
+    </view>
+  </view>
+
+  <view wx:if="{{list.length === 0}}" class="empty">还没有技能，在下面加一个吧</view>
+
+  <!-- 添加 / 修改 -->
+  <view class="px-card">
+    <view class="px-title">{{editingId ? '修改技能' : '添加技能'}}</view>
+
+    <input
+      class="field"
+      placeholder="技能名称，比如：Python"
+      placeholder-class="ph"
+      value="{{formName}}"
+      bindinput="onName"
+      bindblur="onBlur"
+      focus="{{focusField === 'name'}}"
+      maxlength="16"
+      cursor-spacing="24"
+    />
+
+    <view class="slider-row">
+      <text class="slider-label">进度</text>
+      <slider
+        class="slider"
+        min="0"
+        max="100"
+        step="5"
+        value="{{formPercent}}"
+        bindchange="onPercent"
+        bindchanging="onPercent"
+        activeColor="#4FC3F7"
+        backgroundColor="#E8F4FF"
+        block-size="24"
+        block-color="#2C3E66"
+      />
+      <text class="slider-val">{{formPercent}}%</text>
+    </view>
+
+    <input
+      class="field"
+      placeholder="备注一句（可以不填）"
+      placeholder-class="ph"
+      value="{{formNote}}"
+      bindinput="onNote"
+      maxlength="24"
+    />
+
+    <view class="form-actions">
+      <view class="px-btn form-btn" hover-class="px-btn-hover" bindtap="save">保存</view>
+      <view
+        wx:if="{{editingId}}"
+        class="px-btn form-btn form-btn-ghost"
+        hover-class="px-btn-hover"
+        bindtap="cancelEdit"
+      >取消</view>
+    </view>
+  </view>
+
+
+  <undo-bar show="{{undoShow}}" seq="{{undoSeq}}" text="{{undoText}}" bind:undo="onUndo" bind:close="onUndoClose" />
+</view>

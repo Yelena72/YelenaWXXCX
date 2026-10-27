@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "未来展望",
+  "usingComponents": {
+    "undo-bar": "/components/undo-bar/index"
+  }
+}

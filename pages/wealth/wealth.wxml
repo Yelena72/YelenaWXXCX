@@ -1,0 +1,105 @@
+<!-- pages/wealth/wealth.wxml —— 财富 -->
+
+<view class="page-wrap">
+
+  <!-- 总资产 -->
+  <view class="total-card px-card">
+    <!-- 像素金币和星光装饰 -->
+    <view class="deco deco-coin coin-a"></view>
+    <view class="deco deco-coin coin-b"></view>
+    <view class="deco deco-sparkle spark-a"></view>
+    <view class="deco deco-sparkle spark-b"></view>
+
+    <view class="total-label">总资产（元）</view>
+    <view class="total-value">
+      <text class="cny">¥</text>
+      <text class="num">{{hidden ? '****' : totalText}}</text>
+    </view>
+    <view class="total-sub">共 {{accounts.length}} 个账户</view>
+    <view class="eye" bindtap="toggleHide">{{hidden ? '显示金额' : '隐藏金额'}}</view>
+  </view>
+
+  <!-- 账户列表 -->
+  <view class="px-card accounts-card">
+    <view class="deco deco-coin coin-c"></view>
+    <view class="px-title">我的账户</view>
+
+    <view wx:if="{{accounts.length === 0}}" class="empty">还没有账户，在下面添加一个吧</view>
+
+    <view class="acc" wx:for="{{accounts}}" wx:key="id">
+      <view class="acc-top">
+        <view class="acc-badge" style="background-color: {{item.colorHex}};">{{item.typeText}}</view>
+        <view class="acc-name">{{item.name}}</view>
+        <view class="acc-amount">{{hidden ? '****' : item.amountText}}</view>
+      </view>
+
+      <view class="acc-bar">
+        <view
+          class="acc-fill"
+          style="width: {{item.percent}}%; background-color: {{item.colorHex}};"
+        ></view>
+      </view>
+
+      <view class="acc-ops">
+        <view class="op" data-id="{{item.id}}" bindtap="edit" hover-class="op-hover">修改</view>
+        <view class="op op-del" data-id="{{item.id}}" bindtap="remove" hover-class="op-hover">删除</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 添加 / 修改 -->
+  <view class="px-card">
+    <view class="px-title">{{editingId ? '修改账户' : '添加账户'}}</view>
+
+    <view class="form-row">
+      <view class="form-label">类型</view>
+      <view class="types">
+        <view class="type {{formType === 'bank' ? 'on' : ''}}" data-type="bank" bindtap="pickType">银行卡</view>
+        <view class="type {{formType === 'wechat' ? 'on' : ''}}" data-type="wechat" bindtap="pickType">微信</view>
+        <view class="type {{formType === 'alipay' ? 'on' : ''}}" data-type="alipay" bindtap="pickType">支付宝</view>
+        <view class="type {{formType === 'other' ? 'on' : ''}}" data-type="other" bindtap="pickType">其他</view>
+      </view>
+    </view>
+
+    <view class="form-row">
+      <view class="form-label">名称</view>
+      <input
+        class="form-input"
+        value="{{formName}}"
+        bindinput="onName"
+        bindblur="onBlur"
+        focus="{{focusField === 'name'}}"
+        placeholder="如：招商银行"
+        placeholder-class="ph"
+        cursor-spacing="24"
+      />
+    </view>
+
+    <view class="form-row">
+      <view class="form-label">金额</view>
+      <input
+        class="form-input"
+        type="digit"
+        value="{{formAmount}}"
+        bindinput="onAmount"
+        placeholder="如：12345.67"
+        placeholder-class="ph"
+      />
+    </view>
+
+    <view class="form-actions">
+      <view class="px-btn form-btn" hover-class="px-btn-hover" bindtap="save">保存</view>
+      <view
+        wx:if="{{editingId}}"
+        class="px-btn form-btn form-btn-ghost"
+        hover-class="px-btn-hover"
+        bindtap="cancelEdit"
+      >取消</view>
+    </view>
+  </view>
+
+  <view class="tip">数据只存在这台手机里，换手机或删除小程序会丢失。</view>
+
+
+  <undo-bar show="{{undoShow}}" seq="{{undoSeq}}" text="{{undoText}}" bind:undo="onUndo" bind:close="onUndoClose" />
+</view>

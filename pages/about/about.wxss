@@ -1,0 +1,309 @@
+/* pages/about/about.wxss —— 关于我 */
+
+@import "../../styles/art.wxss";
+
+/* 撑满一屏，把草地页脚推到底 */
+.page-wrap {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 36rpx;
+  box-sizing: border-box;
+}
+
+/* ---------------- 角色卡 ---------------- */
+.role-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+/* 像素插画下方加一条边，像画框 */
+.role-art {
+  border-bottom: 6rpx solid #2C3E66;
+  box-sizing: border-box;
+}
+
+.role-name {
+  font-size: 40rpx;
+  color: #2C3E66;
+  letter-spacing: 4rpx;
+  margin-top: 26rpx;
+  text-align: center;
+}
+
+.role-sign {
+  font-size: 24rpx;
+  color: #5B6B95;
+  margin-top: 8rpx;
+  text-align: center;
+}
+
+.role-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 18rpx 24rpx 30rpx;
+}
+
+.role-tag {
+  font-size: 24rpx;
+  color: #2C3E66;
+  background-image: linear-gradient(180deg, #FFE58A 0%, #FFB93C 100%);
+  border: 3rpx solid #2C3E66;
+  padding: 4rpx 16rpx;
+  margin: 0 8rpx 10rpx;
+  box-shadow: 3rpx 3rpx 0 rgba(44, 62, 102, 0.18);
+}
+
+/* ---------------- 属性面板 ---------------- */
+.stat {
+  display: flex;
+  align-items: center;
+  margin-bottom: 18rpx;
+}
+
+.stat:last-child {
+  margin-bottom: 0;
+}
+
+.stat-name {
+  width: 108rpx;
+  font-size: 24rpx;
+  color: #5B6B95;
+  flex-shrink: 0;
+}
+
+.stat-bar {
+  flex: 1;
+  height: 24rpx;
+  background: #E8F4FF;
+  border: 4rpx solid #2C3E66;
+  box-sizing: border-box;
+}
+
+.stat-fill {
+  height: 100%;
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(44, 62, 102, 0.25) 0 4rpx,
+    transparent 4rpx 14rpx
+  );
+  transform-origin: left center;
+  animation: pxGrow 0.8s cubic-bezier(0.2, 0.8, 0.3, 1) backwards;
+}
+
+.stat:nth-child(2) .stat-fill { animation-delay: 0.10s; }
+.stat:nth-child(3) .stat-fill { animation-delay: 0.20s; }
+.stat:nth-child(4) .stat-fill { animation-delay: 0.30s; }
+.stat:nth-child(5) .stat-fill { animation-delay: 0.40s; }
+
+.stat-val {
+  width: 64rpx;
+  text-align: right;
+  font-size: 24rpx;
+  color: #2C3E66;
+}
+
+/* ---------------- 基本信息 ---------------- */
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 22rpx 0;
+  border-bottom: 4rpx dashed #C9DDF0;
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.label {
+  font-size: 26rpx;
+  color: #6B7EA8;
+}
+
+.value {
+  font-size: 28rpx;
+  color: #2C3E66;
+}
+
+.intro {
+  font-size: 28rpx;
+  line-height: 1.9;
+}
+
+/* ---------------- 底部草地 ---------------- */
+.page-foot {
+  margin-top: auto;
+  margin-left: -28rpx;
+  margin-right: -28rpx;
+  padding-top: 30rpx;
+}
+
+.end-note {
+  text-align: center;
+  font-size: 24rpx;
+  letter-spacing: 4rpx;
+  color: #4F8A4A;
+  padding: 14rpx 0 0;
+}
+
+/* ---------------- 编辑入口 ---------------- */
+.edit-btn {
+  height: 96rpx;
+  line-height: 92rpx;
+  text-align: center;
+  font-size: 26rpx;
+  color: #5B6B95;
+  background: rgba(255, 255, 255, 0.55);
+  border: 4rpx dashed #9AB0D0;
+  box-sizing: border-box;
+  margin: -18rpx 0 44rpx;
+}
+
+.edit-btn-hover {
+  background: rgba(255, 255, 255, 0.95);
+}
+
+/* ---------------- 编辑弹窗 ---------------- */
+.ed-mask {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 100;
+  background: rgba(20, 30, 50, 0.45);
+  display: flex;
+  align-items: flex-end;
+}
+
+.ed-sheet {
+  width: 100%;
+  background: #FFFFFF;
+  border-top: 6rpx solid #2C3E66;
+  padding: 34rpx 28rpx 40rpx;
+  box-sizing: border-box;
+  animation: pxRise 0.26s ease-out;
+}
+
+.ed-title {
+  font-size: 32rpx;
+  color: #2C3E66;
+  text-align: center;
+  letter-spacing: 2rpx;
+  margin-bottom: 20rpx;
+}
+
+.ed-body {
+  max-height: 56vh;
+  overflow-y: auto;
+}
+
+.ed-label {
+  font-size: 24rpx;
+  color: #6B7EA8;
+  margin: 14rpx 0 8rpx;
+}
+
+.ed-field {
+  height: 80rpx;
+  box-sizing: border-box;
+  padding: 0 18rpx;
+  font-size: 28rpx;
+  font-family: "PixelCN", monospace;
+  color: #2C3E66;
+  background: #F4FBFF;
+  border: 4rpx solid #2C3E66;
+}
+
+.ed-area {
+  width: 100%;
+  min-height: 140rpx;
+  box-sizing: border-box;
+  padding: 16rpx 18rpx;
+  font-size: 28rpx;
+  line-height: 1.7;
+  font-family: "PixelCN", monospace;
+  color: #2C3E66;
+  background: #F4FBFF;
+  border: 4rpx solid #2C3E66;
+}
+
+.ed-ph {
+  color: #9AB0D0;
+}
+
+.ed-divider {
+  font-size: 24rpx;
+  color: #2C3E66;
+  letter-spacing: 2rpx;
+  margin: 26rpx 0 6rpx;
+  padding-bottom: 8rpx;
+  border-bottom: 4rpx dashed #C9DDF0;
+}
+
+.ed-stat {
+  display: flex;
+  align-items: center;
+  margin-top: 10rpx;
+}
+
+.ed-stat-name {
+  width: 108rpx;
+  font-size: 24rpx;
+  color: #5B6B95;
+  flex-shrink: 0;
+}
+
+.ed-slider {
+  flex: 1;
+  margin: 0 10rpx;
+}
+
+.ed-stat-val {
+  width: 64rpx;
+  text-align: right;
+  font-size: 24rpx;
+  color: #2C3E66;
+}
+
+.ed-actions {
+  display: flex;
+  margin-top: 26rpx;
+}
+
+.ed-btn-ghost {
+  flex: 1;
+  height: 88rpx;
+  line-height: 80rpx;
+  text-align: center;
+  font-size: 28rpx;
+  color: #2C3E66;
+  background: #FFFFFF;
+  border: 5rpx solid #2C3E66;
+  margin-right: 16rpx;
+  box-sizing: border-box;
+}
+
+.ed-btn-ghost-hover {
+  background: #E8F4FF;
+}
+
+.ed-btn-main {
+  flex: 2;
+  height: 88rpx;
+  line-height: 80rpx;
+  text-align: center;
+  font-size: 28rpx;
+  color: #FFFFFF;
+  background-image: linear-gradient(180deg, #9FE87A 0%, #45C25F 100%);
+  border: 5rpx solid #2C3E66;
+  box-shadow: 5rpx 5rpx 0 rgba(44, 62, 102, 0.18);
+  box-sizing: border-box;
+}
+
+.ed-btn-main-hover {
+  transform: translate(5rpx, 5rpx);
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}

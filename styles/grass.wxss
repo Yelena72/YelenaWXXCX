@@ -1,0 +1,13 @@
+/* styles/grass.wxss —— 可平铺像素草地（自动生成） */
+
+.grass-strip {
+  display: block;
+  width: 100%;
+  height: 72rpx;
+  background-repeat: repeat-x;
+  background-position: bottom left;
+  background-size: auto 100%;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: pixelated;
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASAAAABICAYAAABWUygDAAABfklEQVR42u3dPU4CQRiA4W8M3MMLaCgpaEkIjZZewBoLOms6C6D1ApTaEBNbCkvjCbyDpcV6gVmTibA/5nlKICTskjezfBk2AgAAAAAAAAAAAAAAAAAAAAAAAACgackh6JfJw6TKPX5YHrLn8mo3z77++Wbv3NO6M4cAECBAgAAECBAggFMZOAR0gWmdFRCAAAECBCBAgAABHNWgdG9RHGmPEhCNTw+7Nm20AgJcggECBCBAgAABhL1gRBf/cbHO4v0u+z6b0brXU9HSz/Vfj4MVECBAAAIECBCAAAFhChbt7B2r7l+qkten1cxUokVP59/5J96m2fOYxq/JnsRfvv+PH/nv/1fdDQL30caeNSsgwCUYIEAAAgQIEEDYCxb9nsqZzhDu42YFBLgEAxAgQIAAAQIIU7C/ur7YRsmv9HVTKho6X5/D6NL9qvou3V4W3RfMCghwCQYgQIAAAQgQIEAAAgQIEIAAAQIEIECAAAEIECBAAAIECBAgQACN+wHuvls1SglmugAAAABJRU5ErkJggg==");
+}

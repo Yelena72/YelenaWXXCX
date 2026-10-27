@@ -1,0 +1,119 @@
+<!-- pages/todo/todo.wxml —— 待办事项 -->
+
+<view class="page-wrap">
+
+  <!-- 今日进度 -->
+  <view class="stat-card px-card" hover-class="px-card-hover">
+    <view class="stat-top">
+      <view class="stat-ico ico ico-todo"></view>
+      <view class="stat-mid">
+        <view class="stat-label">今日进度</view>
+        <view class="stat-nums">
+          <text class="n-done">{{doneCount}}</text>
+          <text class="n-total">/ {{total}}</text>
+        </view>
+      </view>
+      <view class="stat-pct">{{percent}}%</view>
+    </view>
+
+    <view class="stat-bar">
+      <view class="stat-fill" style="width: {{percent}}%;"></view>
+    </view>
+
+    <view class="stat-note">{{note}}</view>
+  </view>
+
+  <view class="list-hint">点一行勾选完成，长按整条可以修改</view>
+
+  <!-- 添加 / 修改 -->
+  <view class="px-card add-card {{editingId ? 'add-card-editing' : ''}}">
+    <view class="add-head">
+      <view class="add-plus ico ico-plus"></view>
+      <view class="px-title">{{editingId ? '修改待办' : '添加待办'}}</view>
+    </view>
+
+    <view class="input-row">
+      <input
+        class="input"
+        placeholder="今天想做什么？"
+        placeholder-class="ph"
+        value="{{input}}"
+        bindinput="onInput"
+        bindconfirm="add"
+        bindblur="onBlur"
+        focus="{{focusInput}}"
+        confirm-type="done"
+        cursor-spacing="24"
+      />
+      <view class="add-btn" hover-class="add-btn-hover" bindtap="add">{{editingId ? '存' : '加'}}</view>
+    </view>
+
+    <view wx:if="{{editingId}}" class="cancel-row">
+      <view class="cancel" hover-class="cancel-hover" bindtap="cancelEdit">取消修改</view>
+    </view>
+
+    <view wx:else class="add-hint">写好之后按键盘上的「完成」，也能直接添加</view>
+  </view>
+
+  <!-- 一条都没有 -->
+  <view wx:if="{{total === 0}}" class="empty">
+    <view class="empty-ico ico ico-todo"></view>
+    <view class="empty-text">今天还没有安排</view>
+    <view class="empty-sub">写一件小事开始吧</view>
+  </view>
+
+  <!-- 待完成 -->
+  <block wx:if="{{pending.length > 0}}">
+    <view class="group-head">
+      <view class="group-name">待完成</view>
+      <view class="group-count">{{pending.length}}</view>
+    </view>
+
+    <view
+      class="todo {{editingId === item.id ? 'todo-editing' : ''}}"
+      wx:for="{{pending}}"
+      wx:key="id"
+      hover-class="todo-hover"
+      data-id="{{item.id}}"
+      bindtap="toggle"
+      bindlongpress="edit"
+    >
+      <view class="box"></view>
+      <view class="todo-text">{{item.text}}</view>
+      <view class="edit" data-id="{{item.id}}" catchtap="edit">改</view>
+      <view class="del" data-id="{{item.id}}" catchtap="remove">✕</view>
+    </view>
+  </block>
+
+  <!-- 已完成 -->
+  <block wx:if="{{done.length > 0}}">
+    <view class="group-head">
+      <view class="group-name">已完成</view>
+      <view class="group-count group-count-done">{{done.length}}</view>
+    </view>
+
+    <view
+      class="todo todo-done {{editingId === item.id ? 'todo-editing' : ''}}"
+      wx:for="{{done}}"
+      wx:key="id"
+      hover-class="todo-hover"
+      data-id="{{item.id}}"
+      bindtap="toggle"
+      bindlongpress="edit"
+    >
+      <view class="box box-on">✓</view>
+      <view class="todo-text done">{{item.text}}</view>
+      <view class="edit" data-id="{{item.id}}" catchtap="edit">改</view>
+      <view class="del" data-id="{{item.id}}" catchtap="remove">✕</view>
+    </view>
+  </block>
+
+  <!-- 底部：像素草地 + 寄语 -->
+  <view class="page-foot">
+    <view class="grass-strip"></view>
+    <view class="end-note">今天也要加油呀</view>
+  </view>
+
+  <undo-bar show="{{undoShow}}" seq="{{undoSeq}}" text="{{undoText}}" bind:undo="onUndo" bind:close="onUndoClose" />
+
+</view>

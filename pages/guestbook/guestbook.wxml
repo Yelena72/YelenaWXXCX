@@ -1,0 +1,109 @@
+<!-- pages/guestbook/guestbook.wxml —— 留言板 -->
+
+<view class="page-wrap">
+
+  <!-- 没开通云开发时的提示 -->
+  <view wx:if="{{!ready}}" class="px-card">
+    <view class="px-title">还没开通云开发</view>
+    <view class="tip">留言板要用云端数据库，本地存储做不到。</view>
+    <view class="tip">请在开发者工具顶部点「云开发」→ 开通 → 新建环境，</view>
+    <view class="tip">然后把环境 ID 填进根目录的 config.js，重新编译即可。</view>
+  </view>
+
+  <block wx:else>
+
+    <!-- 写留言 -->
+    <view class="px-card" hover-class="px-card-hover">
+      <view class="px-title">写留言</view>
+
+      <input
+        class="field"
+        placeholder="你的昵称"
+        placeholder-class="ph"
+        value="{{nick}}"
+        bindinput="onNick"
+        maxlength="12"
+      />
+
+      <textarea
+        class="area"
+        placeholder="想对我说点什么…"
+        placeholder-class="ph"
+        value="{{input}}"
+        bindinput="onInput"
+        maxlength="200"
+        auto-height
+      />
+
+      <view class="send-row">
+        <view class="send-btn" hover-class="send-btn-hover" bindtap="send">{{sending ? '发送中…' : '发送'}}</view>
+      </view>
+    </view>
+
+    <!-- 列表 -->
+    <view class="list-head">
+      <view class="list-name">大家的留言</view>
+      <view class="list-count">{{list.length}}</view>
+      <view class="refresh" bindtap="reload">刷新</view>
+    </view>
+
+    <view wx:if="{{list.length === 0}}" class="empty">还没有人留言，你是第一个</view>
+
+    <view class="msg px-card" wx:for="{{list}}" wx:key="id" hover-class="px-card-hover">
+      <view class="msg-head">
+        <view class="msg-face" style="background-color: {{item.color}};">{{item.initial}}</view>
+        <view class="msg-nick">{{item.nick}}</view>
+        <view class="msg-time">{{item.time}}</view>
+      </view>
+
+      <view class="msg-text">{{item.content}}</view>
+
+      <!-- 点赞 / 回复 / 删除 -->
+      <view class="msg-ops">
+        <view
+          class="op-like {{item.liked ? 'on' : ''}}"
+          data-index="{{index}}"
+          data-id="{{item.id}}"
+          bindtap="toggleLike"
+        >
+          <view class="ico ico-hobby like-heart"></view>
+          <text class="like-count">{{item.likeCount}}</text>
+        </view>
+
+        <view class="op-reply" data-index="{{index}}" data-id="{{item.id}}" bindtap="openReply">回复</view>
+
+        <view wx:if="{{item.mine}}" class="op-del" data-id="{{item.id}}" bindtap="removeMsg">删除</view>
+      </view>
+
+      <!-- 回复列表 -->
+      <view wx:if="{{item.replies.length > 0}}" class="replies">
+        <view class="reply" wx:for="{{item.replies}}" wx:for-item="rp" wx:key="id">
+          <text class="reply-nick">{{rp.nick}}</text>
+          <text class="reply-text">{{rp.content}}</text>
+        </view>
+      </view>
+
+      <!-- 回复输入 -->
+      <view wx:if="{{replyTo === item.id}}" class="reply-box">
+        <input
+          class="reply-input"
+          placeholder="回复一句…"
+          placeholder-class="ph"
+          value="{{replyText}}"
+          bindinput="onReplyInput"
+          data-index="{{index}}"
+          data-id="{{item.id}}"
+          confirm-type="send"
+          bindconfirm="sendReply"
+          focus="{{replyFocus}}"
+          cursor-spacing="24"
+        />
+        <view class="reply-send" hover-class="reply-send-hover" data-index="{{index}}" data-id="{{item.id}}" bindtap="sendReply">发送</view>
+      </view>
+    </view>
+
+    <view wx:if="{{hasMore}}" class="more" hover-class="more-hover" bindtap="loadMore">加载更多</view>
+
+  </block>
+
+</view>

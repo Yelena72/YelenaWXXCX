@@ -1,0 +1,321 @@
+<!-- pages/social/social.wxml —— 人际交往 -->
+
+<view class="page-wrap">
+
+  <view class="px-card" hover-class="px-card-hover">
+    <view class="px-title">我的性格</view>
+    <view class="tags">
+      <view class="tag" wx:for="{{social.tags}}" wx:key="*this">{{item}}</view>
+    </view>
+  </view>
+
+  <!-- 改这页的文案 -->
+  <view class="text-edit-btn" hover-class="text-edit-btn-hover" bindtap="openTextForm">修改这页的文案</view>
+
+  <!-- 关系网络：可缩放、可翻页的连线画布 -->
+  <!-- 注意：这张卡片故意不加 hover-class，否则按下时整张卡会上浮，画布会跟着跳 -->
+  <view class="px-card">
+    <view class="friend-head">
+      <view class="px-title">关系网络</view>
+      <view class="modes">
+        <view class="mode {{mode === 'view' ? 'on' : ''}}" data-mode="view" bindtap="setMode">浏览</view>
+        <view class="mode {{mode === 'edit' ? 'on' : ''}}" data-mode="edit" bindtap="setMode">编辑</view>
+        <view class="mode {{mode === 'link' ? 'on' : ''}}" data-mode="link" bindtap="setMode">连线</view>
+      </view>
+    </view>
+
+    <!-- 画布：自己算缩放，手机双指 / 电脑按钮都能缩放 -->
+    <view
+      class="stage"
+      id="stage"
+      style="height: {{stageH}}rpx;"
+      catchtouchstart="onStageStart"
+      catchtouchmove="onStageMove"
+      bindtouchend="onStageEnd"
+      bindtouchcancel="onStageEnd"
+    >
+      <!-- 背景风景：太阳 / 云 / 小鸟 / 远山 / 草坡 -->
+      <view class="mapbg">
+        <view class="bg-glow"></view>
+        <view class="mb mb-mount bg-mount"></view>
+        <view class="mb mb-hills bg-hills"></view>
+        <view class="mb mb-sun bg-sun"></view>
+        <view class="mb mb-cloud bg-c1"></view>
+        <view class="mb mb-cloud bg-c2"></view>
+        <view class="mb mb-cloud bg-c3"></view>
+        <view class="mb mb-bird bg-b1"></view>
+        <view class="mb mb-bird bg-b2"></view>
+      </view>
+
+      <view
+        class="world"
+        style="width: {{worldW}}rpx; height: {{worldH}}rpx; transform: translate({{panX}}px, {{panY}}px) scale({{scale}});"
+      >
+        <!-- 关系线：外层是加宽的点击热区，内层才是看得见的细线 -->
+        <view
+          class="edge-hit"
+          wx:for="{{edgesGeo}}"
+          wx:key="id"
+          style="left: {{item.left}}rpx; top: {{item.top}}rpx; width: {{item.len}}rpx; transform: rotate({{item.ang}}deg);"
+          data-id="{{item.id}}"
+          bindtap="onEdgeTap"
+        >
+          <view class="edge-line"></view>
+        </view>
+
+        <!-- 朋友名片：自己吃掉手势，拖动时页面不会跟着滚 -->
+        <view
+          class="friend {{item.sel ? 'sel' : ''}}"
+          wx:for="{{friends}}"
+          wx:key="id"
+          style="left: {{item.x}}rpx; top: {{item.y}}rpx;"
+          data-fid="{{item.id}}"
+          catchtouchstart="onCardStart"
+          catchtouchmove="onCardMove"
+          bindtouchend="onCardEnd"
+        >
+          <view
+            class="friend-face"
+            style="background-color: {{item.color}};"
+            data-fid="{{item.id}}"
+          >{{item.initial}}</view>
+          <view class="friend-name" data-fid="{{item.id}}">{{item.name}}</view>
+        </view>
+
+        <!-- 关系文字：盖在名片上面 -->
+        <view
+          class="edge-label"
+          wx:for="{{labelsGeo}}"
+          wx:key="id"
+          style="left: {{item.midX}}rpx; top: {{item.midY}}rpx;"
+        >{{item.text}}</view>
+      </view>
+
+      <!-- 空画布提示（不接手势，点了照样能拖 / 滚页面） -->
+      <view wx:if="{{friends.length === 0}}" class="stage-empty">
+        <view class="stage-empty-line">这块画布还空着</view>
+        <view class="stage-empty-sub">在下面「添加朋友」里加上第一个人吧</view>
+      </view>
+    </view>
+
+    <!-- 缩放工具条 -->
+    <view class="zoom-bar">
+      <view class="zoom-btn" hover-class="zoom-btn-hover" bindtap="zoomOut">－</view>
+      <view class="zoom-val">{{zoomText}}</view>
+      <view class="zoom-btn" hover-class="zoom-btn-hover" bindtap="zoomIn">＋</view>
+      <view class="zoom-btn zoom-reset" hover-class="zoom-btn-hover" bindtap="resetView">复位</view>
+    </view>
+
+    <!-- 当前模式提示 -->
+    <view class="hint">{{mode === 'view' ? '单指拖动是挪画布，双指缩放；想滚动页面请从画布外面滑' : (mode === 'edit' ? '点一下名片，可以改名或换分类' : '依次点两个人，就能连上线')}}</view>
+    <view class="hint-sub">双击任意一条连线，可以写下你们的关系</view>
+
+    <!-- 当前画布名字，点一下可以改名 -->
+    <view class="board-name" hover-class="board-name-hover" bindtap="renameBoard">{{boardName}}</view>
+
+    <!-- 画布翻页 -->
+    <view class="board-bar">
+      <view class="arrow" hover-class="arrow-hover" bindtap="prevBoard">‹</view>
+
+      <view class="dots">
+        <view
+          class="dot {{current === index ? 'on' : ''}}"
+          wx:for="{{dotList}}"
+          wx:key="*this"
+          data-index="{{index}}"
+          bindtap="goBoard"
+        ></view>
+      </view>
+
+      <view class="arrow" hover-class="arrow-hover" bindtap="nextBoard">›</view>
+    </view>
+
+    <view class="board-tools">
+      <view class="tool" hover-class="tool-hover" bindtap="addBoard">+ 新画布</view>
+      <view class="tool tool-del" hover-class="tool-hover" bindtap="removeBoard">删除本页</view>
+    </view>
+
+    <!-- 添加朋友 -->
+    <view class="add-row">
+      <input
+        class="add-input"
+        placeholder="名字"
+        placeholder-class="ph"
+        value="{{newName}}"
+        bindinput="onName"
+        bindconfirm="addFriend"
+        confirm-type="done"
+      />
+      <view class="add-btn" hover-class="add-btn-hover" bindtap="addFriend">添加</view>
+    </view>
+
+    <view class="cats">
+      <view
+        class="cat {{newCat === item.key ? 'on' : ''}}"
+        wx:for="{{cats}}"
+        wx:key="key"
+        data-key="{{item.key}}"
+        bindtap="pickCat"
+        bindlongpress="holdCat"
+      >
+        <view class="cat-dot" style="background-color: {{item.color}};"></view>
+        <text>{{item.name}}</text>
+      </view>
+
+      <!-- 自己加一个分类 -->
+      <view class="cat cat-add" hover-class="cat-add-hover" bindtap="addCat">
+        <text>＋ 自定义</text>
+      </view>
+    </view>
+
+    <view class="cat-hint">先选分类再点「添加」；长按自己加的分类可以删掉</view>
+  </view>
+
+  <view class="px-card" hover-class="px-card-hover">
+    <view class="px-title">交友偏好</view>
+    <view class="text">{{social.prefer}}</view>
+  </view>
+
+  <view class="px-card" hover-class="px-card-hover">
+    <view class="px-title">想认识这样的你</view>
+    <view class="text">{{social.want}}</view>
+  </view>
+
+  <!-- 联系方式：不用 wx.setClipboardData，改成系统自带的长按选中复制，
+       这样就不用申报「剪切板」这个隐私接口了 -->
+  <view class="px-card contact">
+    <view class="px-title">联系方式</view>
+    <text class="text contact-id" user-select="{{true}}" selectable="{{true}}">{{social.contact}}</text>
+    <view class="px-sub">长按上面的号码就能复制</view>
+  </view>
+
+  <!-- ============ 改这页的文案 ============ -->
+  <view wx:if="{{showTextForm}}" class="sf-mask" bindtap="closeTextForm">
+    <view class="sf-sheet" catchtap="noop">
+      <view class="sf-title">修改这页的文案</view>
+
+      <view class="sf-body">
+        <view class="sf-label">性格标签（空格或逗号隔开，最多 6 个）</view>
+        <input
+          class="sf-field"
+          value="{{textForm.tagsText}}"
+          data-key="tagsText"
+          bindinput="onTextField"
+          maxlength="40"
+          placeholder="慢热 靠谱 有点社恐"
+          placeholder-class="sf-ph"
+          cursor-spacing="24"
+        />
+
+        <view class="sf-label">交友偏好</view>
+        <textarea
+          class="sf-area"
+          value="{{textForm.prefer}}"
+          data-key="prefer"
+          bindinput="onTextField"
+          maxlength="100"
+          auto-height
+          placeholder="比起热闹的聚会，更喜欢一对一聊很久"
+          placeholder-class="sf-ph"
+        />
+
+        <view class="sf-label">想认识这样的你</view>
+        <textarea
+          class="sf-area"
+          value="{{textForm.want}}"
+          data-key="want"
+          bindinput="onTextField"
+          maxlength="100"
+          auto-height
+          placeholder="想认识愿意分享、不着急下判断的人"
+          placeholder-class="sf-ph"
+        />
+
+        <view class="sf-label">微信号</view>
+        <input
+          class="sf-field"
+          value="{{textForm.contact}}"
+          data-key="contact"
+          bindinput="onTextField"
+          maxlength="24"
+          placeholder="填你的微信号"
+          placeholder-class="sf-ph"
+        />
+      </view>
+
+      <view class="sf-actions">
+        <view class="sf-ghost" hover-class="sf-ghost-hover" bindtap="closeTextForm">取消</view>
+        <view class="sf-main" hover-class="sf-main-hover" bindtap="saveTextForm">保存</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- ============ 编辑某个人：改名 / 换分类 ============ -->
+  <view wx:if="{{friendForm.show}}" class="sf-mask" bindtap="closeFriendForm">
+    <view class="sf-sheet" catchtap="noop">
+      <view class="sf-title">编辑名片</view>
+
+      <view class="sf-body">
+        <view class="sf-label">名字</view>
+        <input
+          class="sf-field"
+          value="{{friendForm.name}}"
+          bindinput="onFriendName"
+          maxlength="6"
+          focus="{{friendForm.focus}}"
+          placeholder="名字"
+          placeholder-class="sf-ph"
+          cursor-spacing="24"
+        />
+
+        <view class="sf-label">放在哪个分类</view>
+        <view class="sf-cats">
+          <view
+            class="sf-cat {{friendForm.category === item.key ? 'on' : ''}}"
+            wx:for="{{cats}}"
+            wx:key="key"
+            data-key="{{item.key}}"
+            bindtap="pickFriendCat"
+          >
+            <view class="sf-dot" style="background-color: {{item.color}};"></view>
+            <text>{{item.name}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="sf-actions">
+        <view class="sf-ghost sf-del" hover-class="sf-ghost-hover" bindtap="removeFriendFromForm">删除</view>
+        <view class="sf-ghost" hover-class="sf-ghost-hover" bindtap="closeFriendForm">取消</view>
+        <view class="sf-main" hover-class="sf-main-hover" bindtap="saveFriendForm">保存</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 弹窗输入：一打开就自动聚焦，键盘直接弹出来 -->
+  <view wx:if="{{prompt.show}}" class="prompt-mask" catchtouchmove="noop" bindtap="closePrompt">
+    <view class="prompt" catchtap="noop">
+      <view class="prompt-title">{{prompt.title}}</view>
+
+      <input
+        class="prompt-input"
+        placeholder="{{prompt.placeholder}}"
+        placeholder-class="ph"
+        value="{{prompt.value}}"
+        bindinput="onPromptInput"
+        bindconfirm="confirmPrompt"
+        confirm-type="done"
+        focus="{{prompt.focus}}"
+        maxlength="{{prompt.max}}"
+        cursor-spacing="24"
+      />
+
+      <view class="prompt-actions">
+        <view class="prompt-btn prompt-cancel" hover-class="prompt-btn-hover" bindtap="closePrompt">取消</view>
+        <view class="prompt-btn prompt-ok" hover-class="prompt-btn-hover" bindtap="confirmPrompt">确定</view>
+      </view>
+    </view>
+  </view>
+
+
+  <undo-bar show="{{undoShow}}" seq="{{undoSeq}}" text="{{undoText}}" bind:undo="onUndo" bind:close="onUndoClose" />
+</view>

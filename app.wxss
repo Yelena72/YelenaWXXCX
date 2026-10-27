@@ -1,0 +1,196 @@
+/* ============================================================
+   app.wxss —— 全局像素风样式（明亮自然色版）
+   天空蓝 → 阳光黄 → 草地绿的渐变背景
+   改这一个文件，所有页面风格都会跟着变。
+   ============================================================ */
+
+@import "./styles/font.wxss";
+@import "./styles/icons.wxss";
+@import "./styles/scene.wxss";
+@import "./styles/deco.wxss";
+@import "./styles/grass.wxss";
+
+/* 页面底色：从上到下的自然渐变 + 淡淡的像素网格 */
+page {
+  background-color: #D6F5FF;
+  background-image:
+    linear-gradient(rgba(44, 62, 102, 0.045) 2rpx, transparent 2rpx),
+    linear-gradient(90deg, rgba(44, 62, 102, 0.045) 2rpx, transparent 2rpx),
+    linear-gradient(
+      180deg,
+      #6FD3FF 0%,
+      #A8E8FF 12%,
+      #DFF7FF 26%,
+      #FFF8D6 42%,
+      #FFEFB8 54%,
+      #E4F7C4 68%,
+      #B6E98C 84%,
+      #8ADB6A 100%
+    );
+  background-size: 26rpx 26rpx, 26rpx 26rpx, auto;
+  font-family: "PixelCN", "PingFang SC", monospace;
+  color: #2C3E66;
+  letter-spacing: 1rpx;
+}
+
+.page-wrap {
+  position: relative;
+  padding: 36rpx 28rpx 110rpx;
+  box-sizing: border-box;
+}
+
+/* ---------------- 白色卡片 ---------------- */
+/* 三层阴影：顶部高光 + 硬边投影 + 柔和环境阴影 = 悬浮感 */
+.px-card {
+  position: relative;
+  background-color: #FFFFFF;
+  background-image: linear-gradient(180deg, #FFFFFF 0%, #F5FBFF 100%);
+  color: #2C3E66;
+  border: 6rpx solid #2C3E66;
+  box-shadow:
+    inset 0 5rpx 0 rgba(255, 255, 255, 0.95),
+    12rpx 12rpx 0 rgba(44, 62, 102, 0.14),
+    0 20rpx 36rpx rgba(44, 62, 102, 0.12);
+  padding: 34rpx;
+  margin-bottom: 50rpx;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+/* 按住卡片：整张往上飘，阴影变大 */
+.px-card-hover {
+  transform: translateY(-10rpx);
+  box-shadow:
+    inset 0 5rpx 0 rgba(255, 255, 255, 0.95),
+    14rpx 16rpx 0 rgba(44, 62, 102, 0.12),
+    0 34rpx 54rpx rgba(44, 62, 102, 0.20);
+}
+
+/* ---------------- 渐变小标题 ---------------- */
+.px-title {
+  display: inline-block;
+  background-image: linear-gradient(180deg, #FFE58A 0%, #FFB93C 100%);
+  color: #2C3E66;
+  font-size: 30rpx;
+  padding: 10rpx 26rpx 8rpx;
+  border: 4rpx solid #2C3E66;
+  box-shadow: 5rpx 5rpx 0 rgba(44, 62, 102, 0.18);
+  margin-bottom: 28rpx;
+  letter-spacing: 2rpx;
+}
+
+/* ---------------- 渐变立体按钮 ---------------- */
+.px-btn {
+  background-image: linear-gradient(180deg, #9FE87A 0%, #45C25F 100%);
+  color: #FFFFFF;
+  border: 6rpx solid #2C3E66;
+  box-shadow:
+    inset 0 8rpx 0 rgba(255, 255, 255, 0.35),
+    inset 0 -8rpx 0 rgba(0, 0, 0, 0.12),
+    8rpx 8rpx 0 rgba(44, 62, 102, 0.20);
+  font-weight: bold;
+  text-align: center;
+}
+
+.px-btn-hover {
+  transform: translate(8rpx, 8rpx) scale(0.97);
+  box-shadow:
+    inset 0 8rpx 0 rgba(255, 255, 255, 0.18),
+    inset 0 -8rpx 0 rgba(0, 0, 0, 0.12),
+    0 0 0 rgba(44, 62, 102, 0.20);
+}
+
+/* ---------------- 渐变徽章 ---------------- */
+.badge {
+  display: inline-block;
+  padding: 8rpx 18rpx 6rpx;
+  font-size: 24rpx;
+  color: #FFFFFF;
+  background-image: linear-gradient(180deg, #FF9BD2 0%, #FF6FA5 100%);
+  border: 4rpx solid #2C3E66;
+  box-shadow: 4rpx 4rpx 0 rgba(44, 62, 102, 0.18);
+  letter-spacing: 2rpx;
+}
+
+.badge-sea {
+  background-image: linear-gradient(180deg, #7BDEFF 0%, #2FA8E0 100%);
+}
+
+/* ---------------- 像素分隔线 ---------------- */
+.px-divider {
+  height: 6rpx;
+  margin: 28rpx 0;
+  background-image: repeating-linear-gradient(
+    90deg,
+    #B9D4EC 0 10rpx,
+    transparent 10rpx 22rpx
+  );
+}
+
+/* ---------------- 次要文字 ---------------- */
+.px-sub {
+  font-size: 24rpx;
+  color: #6B7EA8;
+}
+
+/* ============================================================
+   动效：所有页面共用
+   ============================================================ */
+
+/* 从下往上浮现 */
+@keyframes pxRise {
+  from { opacity: 0; transform: translateY(26rpx); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* 弹出 */
+@keyframes pxPop {
+  from { opacity: 0; transform: scale(0.82); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* 上下浮动 */
+@keyframes pxFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-10rpx); }
+}
+
+/* 轻微浮动（卡片用） */
+@keyframes pxFloatSoft {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8rpx); }
+}
+
+/* 闪烁 */
+@keyframes pxBlink {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.25; }
+}
+
+/* 星光 */
+@keyframes pxTwinkle {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.28; }
+}
+
+/* 脉冲放大 */
+@keyframes pxPulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.28); }
+}
+
+/* 横向生长（进度条用） */
+@keyframes pxGrow {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* 卡片依次升起：用 backwards，动画结束后样式回归，
+   这样不会影响按钮的按下效果 */
+.page-wrap > .px-card {
+  animation: pxRise 0.45s ease-out backwards;
+}
+
+.page-wrap > .px-card:nth-child(1) { animation-delay: 0.02s; }
+.page-wrap > .px-card:nth-child(2) { animation-delay: 0.10s; }
+.page-wrap > .px-card:nth-child(3) { animation-delay: 0.18s; }
+.page-wrap > .px-card:nth-child(4) { animation-delay: 0.26s; }

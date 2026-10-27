@@ -1,0 +1,318 @@
+/* pages/wealth/wealth.wxss —— 财富（红色主调，暖色版） */
+
+/* 只在本页生效的背景：淡桃色晨光渐变，结构和其他页一致，只换色温 */
+page {
+  background-color: #FFE6DE;
+  background-image:
+    linear-gradient(rgba(44, 62, 102, 0.045) 2rpx, transparent 2rpx),
+    linear-gradient(90deg, rgba(44, 62, 102, 0.045) 2rpx, transparent 2rpx),
+    linear-gradient(
+      180deg,
+      #FFEDE7 0%,
+      #FFDDD2 35%,
+      #FFCDBC 62%,
+      #FFD9A8 86%,
+      #FFE9B8 100%
+    );
+  background-size: 26rpx 26rpx, 26rpx 26rpx, auto;
+}
+
+/* 小标题：本页改成红色渐变胶囊 */
+.px-title {
+  background-image: linear-gradient(180deg, #FF9B8C 0%, #E5544B 100%);
+  color: #FFFFFF;
+}
+
+/* ---------- 总资产卡：珊瑚红渐变 ---------- */
+/* 入场后一直轻轻浮动 */
+.page-wrap > .px-card.total-card {
+  animation:
+    pxRise 0.45s ease-out backwards,
+    pxFloatSoft 6s ease-in-out 1.2s infinite;
+}
+
+.total-card {
+  position: relative;
+  overflow: hidden;
+  background-image: linear-gradient(160deg, #FF8A7A 0%, #E5544B 55%, #C93A3A 100%);
+  color: #FFFFFF;
+  text-align: center;
+  padding: 38rpx 34rpx 32rpx;
+}
+
+/* ---------- 像素装饰：金币上下浮动，星光闪烁 ---------- */
+.coin-a {
+  position: absolute;
+  left: 18rpx;
+  top: 18rpx;
+  width: 52rpx;
+  height: 52rpx;
+  animation: bob 2.8s ease-in-out infinite;
+}
+
+.coin-b {
+  position: absolute;
+  right: 18rpx;
+  bottom: 22rpx;
+  width: 64rpx;
+  height: 64rpx;
+  animation: bob 3.4s ease-in-out infinite 0.5s;
+}
+
+.spark-a {
+  position: absolute;
+  right: 30rpx;
+  top: 26rpx;
+  width: 26rpx;
+  height: 26rpx;
+  animation: twinkle 2.2s ease-in-out infinite;
+}
+
+.spark-b {
+  position: absolute;
+  left: 34rpx;
+  bottom: 34rpx;
+  width: 20rpx;
+  height: 20rpx;
+  animation: twinkle 2.6s ease-in-out infinite 0.7s;
+}
+
+.accounts-card {
+  position: relative;
+}
+
+.coin-c {
+  position: absolute;
+  right: 26rpx;
+  top: 24rpx;
+  width: 46rpx;
+  height: 46rpx;
+  animation: bob 3s ease-in-out infinite 0.2s;
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10rpx);
+  }
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.total-label {
+  font-size: 24rpx;
+  color: #FFE3DA;
+  letter-spacing: 2rpx;
+}
+
+.total-value {
+  margin: 16rpx 0 10rpx;
+}
+
+.cny {
+  font-size: 34rpx;
+  color: #FFE3B0;
+  margin-right: 6rpx;
+}
+
+.num {
+  font-size: 64rpx;
+  letter-spacing: 2rpx;
+  color: #FFFFFF;
+}
+
+.total-sub {
+  font-size: 24rpx;
+  color: #FFD9D0;
+}
+
+.eye {
+  display: inline-block;
+  margin-top: 22rpx;
+  padding: 8rpx 22rpx;
+  font-size: 24rpx;
+  color: #C93A3A;
+  background: #FFFFFF;
+  border: 4rpx solid #C93A3A;
+  box-shadow: 4rpx 4rpx 0 rgba(201, 58, 58, 0.25);
+}
+
+/* ---------- 账户条目 ---------- */
+.acc {
+  padding: 22rpx 0 18rpx;
+  border-bottom: 4rpx dashed #F0C9BE;
+}
+
+.acc:last-child {
+  border-bottom: none;
+}
+
+.acc-top {
+  display: flex;
+  align-items: center;
+}
+
+.acc-badge {
+  font-size: 24rpx;
+  color: #2C3E66;
+  padding: 4rpx 14rpx;
+  border: 3rpx solid #2C3E66;
+  margin-right: 14rpx;
+  flex-shrink: 0;
+}
+
+.acc-name {
+  flex: 1;
+  font-size: 28rpx;
+  color: #2C3E66;
+}
+
+.acc-amount {
+  font-size: 30rpx;
+  color: #2C3E66;
+}
+
+/* 占比条 */
+.acc-bar {
+  height: 16rpx;
+  background: #FFEFE9;
+  border: 3rpx solid #2C3E66;
+  margin: 14rpx 0 12rpx;
+  box-sizing: border-box;
+}
+
+.acc-fill {
+  height: 100%;
+}
+
+.acc-ops {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.op {
+  font-size: 24rpx;
+  color: #2C3E66;
+  padding: 6rpx 18rpx;
+  border: 3rpx solid #2C3E66;
+  margin-left: 12rpx;
+}
+
+.op-hover {
+  background: #2C3E66;
+  color: #FFFFFF;
+}
+
+.op-del {
+  color: #C93A3A;
+  border-color: #C93A3A;
+}
+
+.op-del.op-hover {
+  background: #C93A3A;
+  color: #FFFFFF;
+}
+
+.empty {
+  text-align: center;
+  font-size: 24rpx;
+  color: #B08A80;
+  padding: 40rpx 0;
+}
+
+/* ---------- 表单 ---------- */
+.form-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 18rpx;
+}
+
+.form-label {
+  width: 86rpx;
+  font-size: 26rpx;
+  color: #8A6A63;
+  flex-shrink: 0;
+}
+
+.form-input {
+  flex: 1;
+  height: 76rpx;
+  box-sizing: border-box;
+  padding: 0 18rpx;
+  font-size: 28rpx;
+  font-family: "PixelCN", monospace;
+  color: #2C3E66;
+  background: #FFF6F2;
+  border: 4rpx solid #2C3E66;
+}
+
+.ph {
+  color: #C9A79E;
+}
+
+.types {
+  flex: 1;
+  display: flex;
+}
+
+.type {
+  flex: 1;
+  box-sizing: border-box;
+  text-align: center;
+  font-size: 24rpx;
+  padding: 16rpx 0;
+  border: 4rpx solid #2C3E66;
+  margin-right: 8rpx;
+  background: #FFFFFF;
+  color: #2C3E66;
+}
+
+.type:last-child {
+  margin-right: 0;
+}
+
+/* 选中的类型：红色渐变 */
+.type.on {
+  background-image: linear-gradient(180deg, #FF9B8C 0%, #E5544B 100%);
+  color: #FFFFFF;
+}
+
+.form-actions {
+  display: flex;
+  margin-top: 26rpx;
+}
+
+.form-btn {
+  flex: 1;
+  padding: 20rpx 0;
+  font-size: 28rpx;
+  background-image: linear-gradient(180deg, #FF8A7A 0%, #D9443C 100%);
+}
+
+/* 取消按钮：白底描边 */
+.form-btn-ghost {
+  margin-left: 16rpx;
+  background-image: none;
+  background-color: #FFFFFF;
+  color: #C93A3A;
+}
+
+/* ---------- 底部说明 ---------- */
+.tip {
+  font-size: 24rpx;
+  color: #8A6A63;
+  line-height: 1.8;
+  text-align: center;
+  padding: 0 24rpx;
+}

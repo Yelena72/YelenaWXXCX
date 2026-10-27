@@ -1,0 +1,9 @@
+{
+  "name": "likeMessage",
+  "version": "1.0.0",
+  "description": "点赞或取消点赞",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

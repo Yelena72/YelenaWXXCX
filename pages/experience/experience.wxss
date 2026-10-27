@@ -1,0 +1,228 @@
+/* pages/experience/experience.wxss —— 个人经历（时间轴） */
+
+/* 撑满一屏，把草地页脚推到底 */
+.page-wrap {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 36rpx;
+  box-sizing: border-box;
+}
+
+/* ---------------- 顶部说明卡 ---------------- */
+.head-card {
+  display: flex;
+  align-items: center;
+}
+
+.head-ico {
+  width: 84rpx;
+  height: 84rpx;
+  margin-right: 22rpx;
+  flex-shrink: 0;
+}
+
+.head-title {
+  font-size: 34rpx;
+  color: #2C3E66;
+  letter-spacing: 2rpx;
+}
+
+.head-sub {
+  font-size: 24rpx;
+  color: #6B7EA8;
+  margin-top: 6rpx;
+}
+
+.tip-line {
+  font-size: 24rpx;
+  color: #9AB0D0;
+  margin: 18rpx 0 22rpx;
+  letter-spacing: 1rpx;
+  line-height: 1.6;
+}
+
+/* ---------------- 时间轴 ---------------- */
+.tl {
+  position: relative;
+  padding-left: 64rpx;
+}
+
+/* 竖虚线：一段一段的小方块 */
+.tl::before {
+  content: "";
+  position: absolute;
+  left: 10rpx;
+  top: 26rpx;
+  bottom: 70rpx;
+  width: 8rpx;
+  background-image: repeating-linear-gradient(
+    180deg,
+    #68C6EE 0 18rpx,
+    transparent 18rpx 34rpx
+  );
+}
+
+.item {
+  position: relative;
+  animation: pxRise 0.4s ease-out backwards;
+}
+
+.item:nth-child(1) { animation-delay: 0.12s; }
+.item:nth-child(2) { animation-delay: 0.22s; }
+.item:nth-child(3) { animation-delay: 0.32s; }
+.item:nth-child(4) { animation-delay: 0.42s; }
+.item:nth-child(5) { animation-delay: 0.52s; }
+.item:nth-child(6) { animation-delay: 0.62s; }
+
+/* 带编号的方形节点，压在虚线上 */
+.node {
+  position: absolute;
+  left: -70rpx;
+  top: 20rpx;
+  width: 40rpx;
+  height: 40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24rpx;
+  color: #2C3E66;
+  background: #FFFFFF;
+  border: 4rpx solid #2C3E66;
+  box-shadow: 4rpx 4rpx 0 rgba(44, 62, 102, 0.20);
+  box-sizing: border-box;
+  z-index: 2;
+}
+
+/* 年份做成彩色小标签，四条一循环 */
+.year {
+  display: inline-block;
+  font-size: 24rpx;
+  color: #FFFFFF;
+  padding: 3rpx 16rpx 2rpx;
+  border: 3rpx solid #2C3E66;
+  box-shadow: 3rpx 3rpx 0 rgba(44, 62, 102, 0.18);
+  margin-bottom: 16rpx;
+}
+
+.item:nth-child(4n + 1) .year { background: #4FC3F7; }
+.item:nth-child(4n + 2) .year { background: #FF8FC7; }
+.item:nth-child(4n + 3) .year { background: #6FD070; }
+.item:nth-child(4n + 4) .year { background: #FFB93C; }
+
+.title {
+  font-size: 32rpx;
+  color: #2C3E66;
+  margin-bottom: 12rpx;
+  letter-spacing: 1rpx;
+}
+
+.desc {
+  font-size: 24rpx;
+  color: #6B7EA8;
+  line-height: 1.8;
+}
+
+/* 正在修改的这一段：描边换个颜色 */
+.body-editing {
+  border-color: #3E8FD0;
+  box-shadow:
+    inset 0 5rpx 0 rgba(255, 255, 255, 0.95),
+    12rpx 12rpx 0 rgba(62, 143, 208, 0.28),
+    0 20rpx 36rpx rgba(62, 143, 208, 0.18);
+}
+
+/* ---------------- 未完待续 ---------------- */.item-end {
+  padding: 26rpx 0 26rpx;
+}
+
+.node-end {
+  background-image: linear-gradient(180deg, #FFE58A 0%, #FFB93C 100%);
+  animation: pxTwinkle 2s ease-in-out infinite;
+}
+
+.end-text {
+  font-size: 24rpx;
+  letter-spacing: 3rpx;
+  color: #7A8FB5;
+}
+
+/* ---------------- 添加 / 修改表单 ---------------- */
+.form-card {
+  margin-top: 10rpx;
+}
+
+.form-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.form-label {
+  width: 86rpx;
+  font-size: 26rpx;
+  color: #6B7EA8;
+  flex-shrink: 0;
+}
+
+.field {
+  flex: 1;
+  height: 80rpx;
+  box-sizing: border-box;
+  padding: 0 18rpx;
+  font-size: 28rpx;
+  font-family: "PixelCN", monospace;
+  color: #2C3E66;
+  background: #F4FBFF;
+  border: 4rpx solid #2C3E66;
+}
+
+.ph {
+  color: #9AB0D0;
+}
+
+.form-actions {
+  display: flex;
+  margin-top: 24rpx;
+}
+
+.form-btn {
+  flex: 1;
+  padding: 18rpx 0;
+  font-size: 24rpx;
+}
+
+.form-btn-ghost {
+  margin-left: 12rpx;
+  background-image: none;
+  background-color: #FFFFFF;
+  color: #2C3E66;
+}
+
+.form-btn-del {
+  margin-left: 12rpx;
+  background-image: linear-gradient(180deg, #FF9B8C 0%, #E5544B 100%);
+}
+
+.empty {
+  text-align: center;
+  font-size: 24rpx;
+  color: #9AB0D0;
+  padding: 30rpx 0 40rpx;
+}
+
+/* ---------------- 底部草地 ---------------- */
+.page-foot {
+  margin-top: auto;
+  margin-left: -28rpx;
+  margin-right: -28rpx;
+  padding-top: 30rpx;
+}
+
+.end-note {
+  text-align: center;
+  font-size: 24rpx;
+  letter-spacing: 4rpx;
+  color: #4F8A4A;
+  padding: 14rpx 0 0;
+}

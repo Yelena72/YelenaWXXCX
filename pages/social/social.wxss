@@ -1,0 +1,782 @@
+/* pages/social/social.wxss —— 人际交往 */
+
+@import "../../styles/mapbg.wxss";
+
+/* ---------------- 性格标签 ---------------- */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.tag {
+  background-image: linear-gradient(180deg, #FFE58A 0%, #FFB93C 100%);
+  border: 4rpx solid #2C3E66;
+  box-shadow: 4rpx 4rpx 0 rgba(44, 62, 102, 0.16);
+  padding: 10rpx 22rpx;
+  margin: 0 16rpx 16rpx 0;
+  font-size: 24rpx;
+  animation: pxPop 0.4s ease-out backwards;
+}
+
+.tag:nth-child(1) { animation-delay: 0.10s; }
+.tag:nth-child(2) { animation-delay: 0.15s; }
+.tag:nth-child(3) { animation-delay: 0.20s; }
+.tag:nth-child(4) { animation-delay: 0.25s; }
+.tag:nth-child(5) { animation-delay: 0.30s; }
+.tag:nth-child(6) { animation-delay: 0.35s; }
+
+.text {
+  font-size: 28rpx;
+  line-height: 1.9;
+}
+
+/* ---------------- 关系网络 ---------------- */
+.friend-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
+}
+
+.friend-head .px-title {
+  margin-bottom: 0;
+}
+
+/* 三个模式按钮 */
+.modes {
+  display: flex;
+}
+
+.mode {
+  font-size: 24rpx;
+  color: #2C3E66;
+  padding: 6rpx 14rpx;
+  margin-left: 8rpx;
+  background: #FFFFFF;
+  border: 3rpx solid #C9DDF0;
+}
+
+.mode.on {
+  background-image: linear-gradient(180deg, #FFE58A 0%, #FFB93C 100%);
+  border-color: #2C3E66;
+  box-shadow: 3rpx 3rpx 0 rgba(44, 62, 102, 0.18);
+}
+
+/* 画布视口：一张像素风景当背景 */
+.stage {
+  position: relative;
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  background-image: linear-gradient(
+    180deg,
+    #B7E5FF 0%,
+    #D7F2FF 34%,
+    #EBF9FF 60%,
+    #F6FDEE 100%
+  );
+  border: 5rpx solid #2C3E66;
+  box-sizing: border-box;
+}
+
+/* 背景层：不接手势，点击会冒泡到 stage 上 */
+.mapbg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+}
+
+/* 太阳：右上角，轻轻呼吸 */
+.bg-sun {
+  position: absolute;
+  right: 26rpx;
+  top: 24rpx;
+  width: 96rpx;
+  height: 96rpx;
+  animation: mbSunPulse 5s ease-in-out infinite alternate;
+}
+
+/* 太阳外面的光晕，用渐变画，不占图片体积 */
+.bg-glow {
+  position: absolute;
+  right: -34rpx;
+  top: -36rpx;
+  width: 270rpx;
+  height: 270rpx;
+  background-image: radial-gradient(
+    circle,
+    rgba(255, 240, 168, 0.52) 0%,
+    rgba(255, 240, 168, 0.22) 40%,
+    rgba(255, 240, 168, 0) 72%
+  );
+}
+
+/* 云：慢慢左右飘 */
+.bg-c1 {
+  position: absolute;
+  left: 6rpx;
+  top: 56rpx;
+  width: 190rpx;
+  height: 78rpx;
+  animation: mbDrift 24s ease-in-out infinite alternate;
+}
+
+.bg-c2 {
+  position: absolute;
+  right: 24rpx;
+  top: 150rpx;
+  width: 118rpx;
+  height: 49rpx;
+  opacity: 0.88;
+  animation: mbDrift 30s ease-in-out infinite alternate-reverse;
+}
+
+.bg-c3 {
+  position: absolute;
+  left: 198rpx;
+  top: 16rpx;
+  width: 88rpx;
+  height: 36rpx;
+  opacity: 0.72;
+  animation: mbDrift 36s ease-in-out infinite alternate;
+}
+
+/* 小鸟 */
+.bg-b1 {
+  position: absolute;
+  left: 74rpx;
+  top: 118rpx;
+  width: 30rpx;
+  height: 15rpx;
+}
+
+.bg-b2 {
+  position: absolute;
+  left: 156rpx;
+  top: 142rpx;
+  width: 22rpx;
+  height: 11rpx;
+  opacity: 0.8;
+}
+
+/* 远山：垫在草坡后面，只露出山头 */
+.bg-mount {
+  position: absolute;
+  left: -20rpx;
+  right: -20rpx;
+  bottom: 64rpx;
+  height: 122rpx;
+}
+
+/* 草坡：压在最下面 */
+.bg-hills {
+  position: absolute;
+  left: -20rpx;
+  right: -20rpx;
+  bottom: -6rpx;
+  height: 168rpx;
+}
+
+@keyframes mbDrift {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(26rpx); }
+}
+
+@keyframes mbSunPulse {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.05); }
+}
+
+/* 可缩放的世界：宽高在 wxml 里写死，靠 transform 缩放 + 平移 */
+.world {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: 0 0;
+}
+
+/* 缩放工具条 */
+.zoom-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 14rpx;
+}
+
+.zoom-btn {
+  min-width: 56rpx;
+  height: 52rpx;
+  line-height: 44rpx;
+  padding: 0 14rpx;
+  text-align: center;
+  font-size: 30rpx;
+  color: #2C3E66;
+  background: #FFFFFF;
+  border: 3rpx solid #2C3E66;
+  box-shadow: 3rpx 3rpx 0 rgba(44, 62, 102, 0.16);
+  box-sizing: border-box;
+}
+
+.zoom-btn-hover {
+  background: #FFE58A;
+}
+
+.zoom-val {
+  min-width: 92rpx;
+  text-align: center;
+  font-size: 24rpx;
+  color: #5B6B95;
+  padding: 0 8rpx;
+}
+
+.zoom-reset {
+  margin-left: 14rpx;
+  font-size: 24rpx;
+  line-height: 46rpx;
+  color: #3E8FD0;
+  border-color: #9CC8E8;
+}
+
+/* 连线：外层是加宽的点击热区，内层才是看得见的细线 */
+.edge-hit {
+  position: absolute;
+  height: 44rpx;
+  margin-top: -22rpx;
+  transform-origin: 0 50%;
+  background: transparent;
+}
+
+.edge-line {
+  height: 6rpx;
+  margin-top: 19rpx;
+  background: rgba(44, 62, 102, 0.32);
+}
+
+/* 连线上的关系文字 */
+.edge-label {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-size: 24rpx;
+  color: #2C3E66;
+  background: #FFF6E0;
+  border: 3rpx solid #2C3E66;
+  padding: 2rpx 12rpx;
+  white-space: nowrap;
+  max-width: 260rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-shadow: 3rpx 3rpx 0 rgba(44, 62, 102, 0.16);
+}
+
+/* 朋友名片 */
+.friend {
+  position: absolute;
+  width: 120rpx;
+  height: 132rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.friend-face {
+  width: 72rpx;
+  height: 72rpx;
+  line-height: 68rpx;
+  text-align: center;
+  font-size: 38rpx;
+  color: #FFFFFF;
+  border: 3rpx solid #2C3E66;
+  box-shadow: 3rpx 3rpx 0 rgba(44, 62, 102, 0.22);
+  box-sizing: border-box;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.friend-name {
+  font-size: 24rpx;
+  color: #2C3E66;
+  margin-top: 10rpx;
+  max-width: 112rpx;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* 连线模式下被选中的名片 */
+.friend.sel .friend-face {
+  border-color: #E08A1E;
+  box-shadow: 0 0 0 5rpx rgba(255, 185, 60, 0.6);
+}
+
+/* 模式提示 */
+.hint {
+  font-size: 24rpx;
+  color: #7A8FB5;
+  margin: 14rpx 0 4rpx;
+  min-height: 30rpx;
+}
+
+.hint-sub {
+  font-size: 24rpx;
+  color: #9AB0D0;
+  margin-bottom: 16rpx;
+}
+
+/* 画布翻页 */
+.board-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16rpx;
+}
+
+.arrow {
+  width: 56rpx;
+  height: 56rpx;
+  line-height: 48rpx;
+  text-align: center;
+  font-size: 40rpx;
+  color: #2C3E66;
+  background: #FFFFFF;
+  border: 3rpx solid #2C3E66;
+  box-shadow: 3rpx 3rpx 0 rgba(44, 62, 102, 0.16);
+}
+
+.arrow-hover {
+  background: #FFE58A;
+}
+
+.dots {
+  display: flex;
+  align-items: center;
+  margin: 0 22rpx;
+}
+
+.dot {
+  width: 20rpx;
+  height: 20rpx;
+  margin: 0 7rpx;
+  background: #FFFFFF;
+  border: 3rpx solid #9AB0D0;
+  box-sizing: border-box;
+}
+
+.dot.on {
+  background-image: linear-gradient(180deg, #FFE58A 0%, #FFB93C 100%);
+  border-color: #2C3E66;
+}
+
+/* 画布工具 */
+.board-tools {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 22rpx;
+}
+
+.tool {
+  font-size: 24rpx;
+  color: #2C3E66;
+  padding: 6rpx 20rpx;
+  margin: 0 8rpx;
+  background: #FFFFFF;
+  border: 3rpx solid #C9DDF0;
+}
+
+.tool-hover {
+  background: #E8F4FF;
+}
+
+.tool-del {
+  color: #C93A3A;
+  border-color: #F0C9BE;
+}
+
+/* ---------------- 添加朋友 ---------------- */
+.add-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.add-input {
+  flex: 1;
+  height: 76rpx;
+  box-sizing: border-box;
+  padding: 0 18rpx;
+  font-size: 28rpx;
+  font-family: "PixelCN", monospace;
+  color: #2C3E66;
+  background: #FFFFFF;
+  border: 4rpx solid #2C3E66;
+}
+
+.ph {
+  color: #9AB0D0;
+}
+
+.add-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 116rpx;
+  height: 76rpx;
+  margin-left: 14rpx;
+  background-image: linear-gradient(180deg, #9FE87A 0%, #45C25F 100%);
+  color: #FFFFFF;
+  font-size: 28rpx;
+  border: 4rpx solid #2C3E66;
+  box-shadow: 5rpx 5rpx 0 rgba(44, 62, 102, 0.18);
+  flex-shrink: 0;
+}
+
+.add-btn-hover {
+  transform: translate(5rpx, 5rpx);
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}
+
+.cats {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.cat {
+  display: flex;
+  align-items: center;
+  font-size: 24rpx;
+  color: #2C3E66;
+  padding: 6rpx 16rpx;
+  margin: 0 12rpx 10rpx 0;
+  background: #FFFFFF;
+  border: 3rpx solid #C9DDF0;
+}
+
+.cat.on {
+  border-color: #2C3E66;
+  background-image: linear-gradient(180deg, #FFE58A 0%, #FFB93C 100%);
+  box-shadow: 3rpx 3rpx 0 rgba(44, 62, 102, 0.18);
+}
+
+.cat-dot {
+  width: 18rpx;
+  height: 18rpx;
+  margin-right: 10rpx;
+  border: 2rpx solid #2C3E66;
+  box-sizing: border-box;
+}
+
+/* 「＋ 自定义」这一颗：虚线框，和普通分类区分开 */
+.cat-add {
+  color: #3E8FD0;
+  border-style: dashed;
+  border-color: #9CC8E8;
+  background: #F4FBFF;
+}
+
+.cat-add-hover {
+  background: #E4F4FF;
+  border-color: #3E8FD0;
+}
+
+.cat-hint {
+  font-size: 24rpx;
+  color: #9AB0D0;
+  line-height: 1.6;
+  margin-top: 4rpx;
+}
+
+/* ---------------- 联系方式 ---------------- */
+.contact {
+  background-color: #DFF6FF;
+  background-image: linear-gradient(180deg, #CDF0FF 0%, #9FDFFF 100%);
+}
+
+.contact .px-sub {
+  color: #2C3E66;
+}
+
+/* ---------------- 弹窗输入 ---------------- */
+.prompt-mask {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 60rpx 300rpx;
+  box-sizing: border-box;
+  background: rgba(20, 34, 60, 0.45);
+}
+
+.prompt {
+  width: 100%;
+  padding: 32rpx;
+  background: #FFFFFF;
+  border: 6rpx solid #2C3E66;
+  box-shadow: 12rpx 12rpx 0 rgba(44, 62, 102, 0.22);
+  box-sizing: border-box;
+  animation: pxPop 0.26s ease-out;
+}
+
+.prompt-title {
+  font-size: 30rpx;
+  color: #2C3E66;
+  letter-spacing: 1rpx;
+  margin-bottom: 22rpx;
+}
+
+.prompt-input {
+  height: 88rpx;
+  padding: 0 20rpx;
+  box-sizing: border-box;
+  font-size: 30rpx;
+  font-family: "PixelCN", monospace;
+  color: #2C3E66;
+  background: #F4FBFF;
+  border: 5rpx solid #2C3E66;
+}
+
+.prompt-actions {
+  display: flex;
+  margin-top: 26rpx;
+}
+
+.prompt-btn {
+  flex: 1;
+  text-align: center;
+  padding: 18rpx 0;
+  font-size: 28rpx;
+  border: 5rpx solid #2C3E66;
+  box-sizing: border-box;
+}
+
+.prompt-cancel {
+  background: #FFFFFF;
+  color: #5B6B95;
+}
+
+.prompt-ok {
+  margin-left: 16rpx;
+  color: #FFFFFF;
+  background-image: linear-gradient(180deg, #9FE87A 0%, #45C25F 100%);
+  box-shadow: 5rpx 5rpx 0 rgba(44, 62, 102, 0.20);
+}
+
+.prompt-btn-hover {
+  transform: translate(5rpx, 5rpx);
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}
+
+/* 可长按选中的微信号：text 默认是行内元素，这里让它单独占一行 */
+.contact-id {
+  display: block;
+  letter-spacing: 1rpx;
+}
+
+/* ---------------- 改这页的文案：入口 ---------------- */
+.text-edit-btn {
+  height: 96rpx;
+  line-height: 92rpx;
+  text-align: center;
+  font-size: 26rpx;
+  color: #5B6B95;
+  background: rgba(255, 255, 255, 0.55);
+  border: 4rpx dashed #9AB0D0;
+  box-sizing: border-box;
+  margin: -18rpx 0 44rpx;
+}
+
+.text-edit-btn-hover {
+  background: rgba(255, 255, 255, 0.95);
+}
+
+/* ---------------- 画布名字（点一下改名） ---------------- */
+.board-name {
+  text-align: center;
+  font-size: 24rpx;
+  color: #3E8FD0;
+  letter-spacing: 2rpx;
+  margin: 0 0 14rpx;
+  text-decoration: underline dashed;
+}
+
+.board-name-hover {
+  color: #1E6BA8;
+}
+
+/* ---------------- 弹窗表单（文案 / 名片） ---------------- */
+.sf-mask {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 150;
+  background: rgba(20, 30, 50, 0.45);
+  display: flex;
+  align-items: flex-end;
+}
+
+.sf-sheet {
+  width: 100%;
+  background: #FFFFFF;
+  border-top: 6rpx solid #2C3E66;
+  padding: 34rpx 28rpx 40rpx;
+  box-sizing: border-box;
+  animation: pxRise 0.26s ease-out;
+}
+
+.sf-title {
+  font-size: 32rpx;
+  color: #2C3E66;
+  text-align: center;
+  letter-spacing: 2rpx;
+  margin-bottom: 20rpx;
+}
+
+.sf-body {
+  max-height: 54vh;
+  overflow-y: auto;
+}
+
+.sf-label {
+  font-size: 24rpx;
+  color: #6B7EA8;
+  margin: 14rpx 0 8rpx;
+}
+
+.sf-field {
+  height: 80rpx;
+  box-sizing: border-box;
+  padding: 0 18rpx;
+  font-size: 28rpx;
+  font-family: "PixelCN", monospace;
+  color: #2C3E66;
+  background: #F4FBFF;
+  border: 4rpx solid #2C3E66;
+}
+
+.sf-area {
+  width: 100%;
+  min-height: 120rpx;
+  box-sizing: border-box;
+  padding: 16rpx 18rpx;
+  font-size: 28rpx;
+  line-height: 1.7;
+  font-family: "PixelCN", monospace;
+  color: #2C3E66;
+  background: #F4FBFF;
+  border: 4rpx solid #2C3E66;
+}
+
+.sf-ph {
+  color: #9AB0D0;
+}
+
+.sf-cats {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.sf-cat {
+  display: flex;
+  align-items: center;
+  font-size: 24rpx;
+  color: #2C3E66;
+  padding: 8rpx 16rpx;
+  margin: 0 12rpx 12rpx 0;
+  background: #FFFFFF;
+  border: 3rpx solid #C9DDF0;
+}
+
+.sf-cat.on {
+  border-color: #2C3E66;
+  background-image: linear-gradient(180deg, #FFE58A 0%, #FFB93C 100%);
+  box-shadow: 3rpx 3rpx 0 rgba(44, 62, 102, 0.18);
+}
+
+.sf-dot {
+  width: 18rpx;
+  height: 18rpx;
+  margin-right: 10rpx;
+  border: 2rpx solid #2C3E66;
+  box-sizing: border-box;
+}
+
+.sf-actions {
+  display: flex;
+  margin-top: 26rpx;
+}
+
+.sf-ghost {
+  flex: 1;
+  height: 88rpx;
+  line-height: 80rpx;
+  text-align: center;
+  font-size: 26rpx;
+  color: #2C3E66;
+  background: #FFFFFF;
+  border: 5rpx solid #2C3E66;
+  margin-right: 14rpx;
+  box-sizing: border-box;
+}
+
+.sf-ghost-hover {
+  background: #E8F4FF;
+}
+
+.sf-del {
+  color: #C93A3A;
+  background: #FFF3F1;
+  border-color: #E5544B;
+}
+
+.sf-main {
+  flex: 2;
+  height: 88rpx;
+  line-height: 80rpx;
+  text-align: center;
+  font-size: 28rpx;
+  color: #FFFFFF;
+  background-image: linear-gradient(180deg, #9FE87A 0%, #45C25F 100%);
+  border: 5rpx solid #2C3E66;
+  box-shadow: 5rpx 5rpx 0 rgba(44, 62, 102, 0.18);
+  box-sizing: border-box;
+}
+
+.sf-main-hover {
+  transform: translate(5rpx, 5rpx);
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}
+
+/* 空画布的提示，浮在风景上面但不挡手势 */
+.stage-empty {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 40%;
+  text-align: center;
+  pointer-events: none;
+}
+
+.stage-empty-line {
+  display: inline-block;
+  font-size: 26rpx;
+  color: #2C3E66;
+  background: rgba(255, 255, 255, 0.86);
+  border: 4rpx dashed #9AB0D0;
+  padding: 12rpx 26rpx;
+  letter-spacing: 2rpx;
+}
+
+.stage-empty-sub {
+  font-size: 24rpx;
+  color: #5B6B95;
+  margin-top: 14rpx;
+  text-shadow: 0 2rpx 0 rgba(255, 255, 255, 0.9);
+}

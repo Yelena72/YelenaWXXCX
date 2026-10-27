@@ -1,0 +1,170 @@
+/* pages/skills/skills.wxss —— 想学的技能 */
+
+/* ---------------- 概览 ---------------- */
+.summary {
+  display: flex;
+  align-items: center;
+  padding: 30rpx 20rpx;
+}
+
+.sum-item {
+  flex: 1;
+  text-align: center;
+}
+
+.sum-divider {
+  width: 4rpx;
+  height: 64rpx;
+  background: #DCE9F5;
+}
+
+.sum-label {
+  font-size: 24rpx;
+  color: #6B7EA8;
+}
+
+.sum-num {
+  font-size: 48rpx;
+  color: #2C3E66;
+  margin-top: 6rpx;
+}
+
+.sum-unit {
+  font-size: 24rpx;
+  color: #9AB0D0;
+  margin-left: 6rpx;
+}
+
+/* ---------------- 技能卡 ---------------- */
+.skill {
+  padding: 28rpx 30rpx 24rpx;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18rpx;
+}
+
+.name {
+  font-size: 30rpx;
+  color: #2C3E66;
+  letter-spacing: 1rpx;
+}
+
+.pct {
+  font-size: 26rpx;
+  color: #FF6FA5;
+}
+
+.bar {
+  height: 30rpx;
+  background: #E8F4FF;
+  border: 5rpx solid #2C3E66;
+  box-sizing: border-box;
+}
+
+.fill {
+  height: 100%;
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(44, 62, 102, 0.28) 0 4rpx,
+    transparent 4rpx 16rpx
+  );
+  transition: width 0.2s ease;
+}
+
+.note {
+  font-size: 24rpx;
+  color: #6B7EA8;
+  margin-top: 14rpx;
+}
+
+.ops {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16rpx;
+}
+
+.op {
+  font-size: 24rpx;
+  color: #2C3E66;
+  padding: 6rpx 20rpx;
+  border: 3rpx solid #C9DDF0;
+  margin-left: 12rpx;
+  background: #FFFFFF;
+}
+
+.op-del {
+  color: #C93A3A;
+  border-color: #F0C9BE;
+}
+
+/* ---------------- 空状态 ---------------- */
+.empty {
+  text-align: center;
+  font-size: 24rpx;
+  color: #9AB0D0;
+  padding: 50rpx 0;
+}
+
+/* ---------------- 表单 ---------------- */
+.field {
+  height: 80rpx;
+  box-sizing: border-box;
+  padding: 0 18rpx;
+  margin-bottom: 16rpx;
+  font-size: 28rpx;
+  font-family: "PixelCN", monospace;
+  color: #2C3E66;
+  background: #F4FBFF;
+  border: 4rpx solid #2C3E66;
+}
+
+.ph {
+  color: #9AB0D0;
+}
+
+.slider-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 18rpx;
+}
+
+.slider-label {
+  font-size: 24rpx;
+  color: #6B7EA8;
+  flex-shrink: 0;
+}
+
+.slider {
+  flex: 1;
+  margin: 0 16rpx;
+}
+
+.slider-val {
+  width: 80rpx;
+  text-align: right;
+  font-size: 24rpx;
+  color: #2C3E66;
+  flex-shrink: 0;
+}
+
+.form-actions {
+  display: flex;
+  margin-top: 24rpx;
+}
+
+.form-btn {
+  flex: 1;
+  padding: 18rpx 0;
+  font-size: 28rpx;
+}
+
+.form-btn-ghost {
+  margin-left: 16rpx;
+  background-image: none;
+  background-color: #FFFFFF;
+  color: #2C3E66;
+}

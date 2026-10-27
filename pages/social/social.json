@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "人际交往",
+  "usingComponents": {
+    "undo-bar": "/components/undo-bar/index"
+  }
+}

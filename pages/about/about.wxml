@@ -1,0 +1,187 @@
+<!-- pages/about/about.wxml —— 关于我 -->
+
+<view class="page-wrap">
+
+  <!-- 角色卡：像素插画 + 名字 -->
+  <view class="role-card px-card" hover-class="px-card-hover">
+    <view class="role-art"></view>
+
+    <view class="role-name">{{profile.name}}</view>
+    <view class="role-sign">{{profile.signature}}</view>
+
+    <view class="role-tags">
+      <view class="role-tag" wx:for="{{tags}}" wx:key="*this">{{item}}</view>
+    </view>
+  </view>
+
+  <!-- 编辑入口 -->
+  <view class="edit-btn" hover-class="edit-btn-hover" bindtap="openForm">修改我的资料</view>
+
+  <!-- 属性面板 -->
+  <view class="px-card" hover-class="px-card-hover">
+    <view class="px-title">属性面板</view>
+
+    <view class="stat" wx:for="{{stats}}" wx:key="name">
+      <view class="stat-name">{{item.name}}</view>
+      <view class="stat-bar">
+        <view
+          class="stat-fill"
+          style="width: {{item.value}}%; background-color: {{item.color}};"
+        ></view>
+      </view>
+      <view class="stat-val">{{item.value}}</view>
+    </view>
+  </view>
+
+  <!-- 基本信息 -->
+  <view class="px-card" hover-class="px-card-hover">
+    <view class="px-title">基本信息</view>
+    <view class="row" wx:for="{{rows}}" wx:key="label">
+      <view class="label">{{item.label}}</view>
+      <view class="value">{{item.value}}</view>
+    </view>
+  </view>
+
+  <!-- 关于我 -->
+  <view class="px-card" hover-class="px-card-hover">
+    <view class="px-title">关于我</view>
+    <view class="intro">{{intro}}</view>
+  </view>
+
+  <!-- 底部草地 -->
+  <view class="page-foot">
+    <view class="grass-strip"></view>
+    <view class="end-note">很高兴认识你</view>
+  </view>
+
+  <!-- ================= 编辑弹窗 ================= -->
+  <view wx:if="{{showForm}}" class="ed-mask" bindtap="closeForm">
+    <view class="ed-sheet" catchtap="noop">
+      <view class="ed-title">修改资料</view>
+
+      <view class="ed-body">
+
+        <view class="ed-label">昵称</view>
+        <input
+          class="ed-field"
+          value="{{form.name}}"
+          data-key="name"
+          bindinput="onField"
+          bindblur="onBlur"
+          focus="{{formFocus}}"
+          maxlength="12"
+          placeholder="你的昵称"
+          placeholder-class="ed-ph"
+          cursor-spacing="24"
+        />
+
+        <view class="ed-label">一句话签名</view>
+        <input
+          class="ed-field"
+          value="{{form.signature}}"
+          data-key="signature"
+          bindinput="onField"
+          maxlength="24"
+          placeholder="正在努力成为更好的自己"
+          placeholder-class="ed-ph"
+        />
+
+        <view class="ed-label">标签（用空格或逗号隔开，最多 4 个）</view>
+        <input
+          class="ed-field"
+          value="{{form.tagsText}}"
+          data-key="tagsText"
+          bindinput="onField"
+          maxlength="30"
+          placeholder="慢热 细心 爱幻想"
+          placeholder-class="ed-ph"
+        />
+
+        <view class="ed-divider">基本信息</view>
+
+        <view class="ed-label">城市</view>
+        <input
+          class="ed-field"
+          value="{{form.city}}"
+          data-key="city"
+          bindinput="onField"
+          maxlength="12"
+          placeholder="深圳"
+          placeholder-class="ed-ph"
+        />
+
+        <view class="ed-label">身份</view>
+        <input
+          class="ed-field"
+          value="{{form.identity}}"
+          data-key="identity"
+          bindinput="onField"
+          maxlength="16"
+          placeholder="SZUer"
+          placeholder-class="ed-ph"
+        />
+
+        <view class="ed-label">MBTI</view>
+        <input
+          class="ed-field"
+          value="{{form.mbti}}"
+          data-key="mbti"
+          bindinput="onField"
+          maxlength="8"
+          placeholder="ENTJ"
+          placeholder-class="ed-ph"
+        />
+
+        <view class="ed-label">现在的状态</view>
+        <input
+          class="ed-field"
+          value="{{form.status}}"
+          data-key="status"
+          bindinput="onField"
+          maxlength="16"
+          placeholder="稳稳的很安心"
+          placeholder-class="ed-ph"
+        />
+
+        <view class="ed-divider">关于我</view>
+        <textarea
+          class="ed-area"
+          value="{{form.intro}}"
+          data-key="intro"
+          bindinput="onField"
+          maxlength="200"
+          auto-height
+          placeholder="介绍一下自己"
+          placeholder-class="ed-ph"
+        />
+
+        <view class="ed-divider">属性面板</view>
+        <view class="ed-stat" wx:for="{{formStats}}" wx:key="name">
+          <view class="ed-stat-name">{{item.name}}</view>
+          <slider
+            class="ed-slider"
+            min="0"
+            max="100"
+            step="5"
+            value="{{item.value}}"
+            data-index="{{index}}"
+            bindchange="onStat"
+            bindchanging="onStat"
+            activeColor="{{item.color}}"
+            backgroundColor="#E8F4FF"
+            block-size="22"
+            block-color="#2C3E66"
+          />
+          <view class="ed-stat-val">{{item.value}}</view>
+        </view>
+
+      </view>
+
+      <view class="ed-actions">
+        <view class="ed-btn-ghost" hover-class="ed-btn-ghost-hover" bindtap="closeForm">取消</view>
+        <view class="ed-btn-main" hover-class="ed-btn-main-hover" bindtap="save">保存</view>
+      </view>
+    </view>
+  </view>
+
+</view>

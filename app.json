@@ -1,0 +1,56 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/guestbook/guestbook",
+    "pages/about/about",
+    "pages/experience/experience",
+    "pages/hobbies/hobbies",
+    "pages/skills/skills",
+    "pages/social/social",
+    "pages/future/future",
+    "pages/wealth/wealth",
+    "pages/todo/todo"
+  ],
+  "window": {
+    "navigationBarTitleText": "Yelena",
+    "navigationBarBackgroundColor": "#2FA8E0",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#D6F5FF",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "color": "#9AB0D0",
+    "selectedColor": "#2C3E66",
+    "backgroundColor": "#F4FBFF",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/tabs/home.png",
+        "selectedIconPath": "images/tabs/home-on.png"
+      },
+      {
+        "pagePath": "pages/todo/todo",
+        "text": "待办",
+        "iconPath": "images/tabs/todo.png",
+        "selectedIconPath": "images/tabs/todo-on.png"
+      },
+      {
+        "pagePath": "pages/wealth/wealth",
+        "text": "财富",
+        "iconPath": "images/tabs/wealth.png",
+        "selectedIconPath": "images/tabs/wealth-on.png"
+      },
+      {
+        "pagePath": "pages/about/about",
+        "text": "关于我",
+        "iconPath": "images/tabs/about.png",
+        "selectedIconPath": "images/tabs/about-on.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "lazyCodeLoading": "requiredComponents",
+  "sitemapLocation": "sitemap.json"
+}

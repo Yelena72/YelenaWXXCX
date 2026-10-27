@@ -1,0 +1,127 @@
+/* pages/hobbies/hobbies.wxss —— 兴趣爱好 */
+
+.tip-line {
+  font-size: 24rpx;
+  color: #9AB0D0;
+  margin-bottom: 18rpx;
+  letter-spacing: 1rpx;
+}
+
+/* ---------------- 卡片网格 ---------------- */
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.card {
+  width: 48%;
+  box-sizing: border-box;
+  background-color: #FFFFFF;
+  background-image: linear-gradient(180deg, #FFFFFF 0%, #F4FAFF 100%);
+  color: #2C3E66;
+  border: 6rpx solid #2C3E66;
+  padding: 28rpx 20rpx;
+  margin-bottom: 36rpx;
+  text-align: center;
+  animation: pxPop 0.42s ease-out backwards;
+}
+
+.card:nth-child(4n + 1) { box-shadow: 9rpx 9rpx 0 #4FC3F7; }
+.card:nth-child(4n + 2) { box-shadow: 9rpx 9rpx 0 #FFC845; }
+.card:nth-child(4n + 3) { box-shadow: 9rpx 9rpx 0 #FF8FC7; }
+.card:nth-child(4n + 4) { box-shadow: 9rpx 9rpx 0 #6FD070; }
+
+.card:nth-child(1) { animation-delay: 0.10s; }
+.card:nth-child(2) { animation-delay: 0.16s; }
+.card:nth-child(3) { animation-delay: 0.22s; }
+.card:nth-child(4) { animation-delay: 0.28s; }
+.card:nth-child(5) { animation-delay: 0.34s; }
+.card:nth-child(6) { animation-delay: 0.40s; }
+
+.card-ico {
+  width: 96rpx;
+  height: 96rpx;
+  margin: 0 auto 16rpx;
+}
+
+.name {
+  font-size: 30rpx;
+  margin: 10rpx 0 8rpx;
+  letter-spacing: 2rpx;
+}
+
+.desc {
+  font-size: 24rpx;
+  color: #6B7EA8;
+  line-height: 1.6;
+}
+
+.empty {
+  text-align: center;
+  font-size: 24rpx;
+  color: #9AB0D0;
+  padding: 40rpx 0;
+}
+
+/* ---------------- 图标选择 ---------------- */
+.icons {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 18rpx;
+}
+
+.icon-chip {
+  width: 80rpx;
+  height: 80rpx;
+  margin: 0 12rpx 12rpx 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FFFFFF;
+  border: 3rpx solid #C9DDF0;
+  box-sizing: border-box;
+}
+
+.icon-chip.on {
+  border-color: #2C3E66;
+  box-shadow: 0 0 0 3rpx #FFB93C;
+}
+
+.icon-preview {
+  width: 56rpx;
+  height: 56rpx;
+}
+
+/* ---------------- 表单 ---------------- */
+.field {
+  height: 80rpx;
+  box-sizing: border-box;
+  padding: 0 18rpx;
+  margin-bottom: 16rpx;
+  font-size: 28rpx;
+  font-family: "PixelCN", monospace;
+  color: #2C3E66;
+  background: #F4FBFF;
+  border: 4rpx solid #2C3E66;
+}
+
+.ph {
+  color: #9AB0D0;
+}
+
+.form-actions {
+  display: flex;
+  margin-top: 24rpx;
+}
+
+.form-btn {
+  flex: 1;
+  padding: 18rpx 0;
+  font-size: 28rpx;
+}
+
+.form-btn-del {
+  margin-left: 16rpx;
+  background-image: linear-gradient(180deg, #FF9B8C 0%, #E5544B 100%);
+}

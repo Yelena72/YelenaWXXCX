@@ -1,0 +1,13 @@
+/* styles/deco.wxss —— 像素装饰（自动生成，别手改） */
+
+.deco {
+  display: block;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: pixelated;
+}
+
+.deco-coin { background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAA/UlEQVR42u3dsQ2CQBSA4YdxClZgEOjs3EUbYyO70NHBIKzgGrqBxhDyjvj9AyC5z7vcNUeEJEmSpH+r2voHpkv92vMAdf1z0zE6+A/mBgAAAAEAIADOASn7/PY6pA7A/DinnhPMAEsQAAEAIAAAVOI54Ns+vz01nx/Q3Na94XIvegDncVl1TjADLEEABACAAABQQsf0Nyh8n28GABAAAAIAQACcA+zzzQAAAgBAAAAIAAABACAAAAQAgAAAEAAAAgBAAAAIAAABACAAAAQAgACEe0Pj5/uGIve+n3BvqCVIAAAIAAABcA7wHTEzwBIkAAAEAIAASJIkSdL+egOWkCJMRMSFOAAAAABJRU5ErkJggg=="); }
+
+.deco-sparkle { background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFgAAABYCAYAAABxlTA0AAAAyElEQVR42u3c4QmAIBCAUWuCZnLwZmoD3aAfHuKh75sgHyJHiKVIkiRJ53Vl/8D2ve13AU9NvYbbHgMMWIABAxZgc/DAnBte4OI52Q4GDFiAAQMW4DPn4NlzbvY52Q52RAAWYMCABTjnGJh9TrWDBRgwYAEGDFgr/gebk2P/k+1gRwRgAQYMWID3vBex+5wcvTdhBzsiAAswYMAC7H6w+8ECDFiAAQMWYO9FeC9CgAEDRgAYsAB7P9j7wQIMGLAAAxZgSZIkSVPrYGQkNFYo8qEAAAAASUVORK5CYII="); }

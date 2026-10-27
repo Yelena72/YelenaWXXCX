@@ -1,0 +1,113 @@
+<!-- pages/experience/experience.wxml —— 个人经历 -->
+
+<view class="page-wrap">
+
+  <!-- 顶部说明 -->
+  <view class="head-card px-card" hover-class="px-card-hover">
+    <view class="head-ico ico ico-exp"></view>
+    <view class="head-text">
+      <view class="head-title">我的时间线</view>
+      <view class="head-sub">已经走过 {{list.length}} 个节点</view>
+    </view>
+  </view>
+
+  <view class="tip-line">点任意一段经历，可以修改或删除；存完会自动按年份排序</view>
+
+  <!-- 时间轴 -->
+  <view class="tl">
+    <view
+      class="item"
+      wx:for="{{list}}"
+      wx:key="id"
+      data-id="{{item.id}}"
+      bindtap="edit"
+    >
+      <!-- 左边带编号的节点 -->
+      <view class="node">{{index + 1}}</view>
+
+      <view class="body px-card {{editingId === item.id ? 'body-editing' : ''}}" hover-class="px-card-hover">
+        <view class="year">{{item.year}}</view>
+        <view class="title">{{item.title}}</view>
+        <view wx:if="{{!item.empty}}" class="desc">{{item.desc}}</view>
+      </view>
+    </view>
+
+    <!-- 未完待续 -->
+    <view class="item item-end">
+      <view class="node node-end"></view>
+      <view class="end-text">TO BE CONTINUED …</view>
+    </view>
+  </view>
+
+  <!-- 一条都没有 -->
+  <view wx:if="{{list.length === 0}}" class="empty">还没有经历，在下面加一段吧</view>
+
+  <!-- 添加 / 修改 -->
+  <view class="px-card form-card">
+    <view class="px-title">{{editingId ? '修改经历' : '添加经历'}}</view>
+
+    <view class="form-row">
+      <view class="form-label">年份</view>
+      <input
+        class="field"
+        placeholder="如：2024"
+        placeholder-class="ph"
+        value="{{formYear}}"
+        bindinput="onYear"
+        bindblur="onBlur"
+        focus="{{focusField === 'year'}}"
+        maxlength="10"
+        cursor-spacing="24"
+      />
+    </view>
+
+    <view class="form-row">
+      <view class="form-label">标题</view>
+      <input
+        class="field"
+        placeholder="如：第一次接触编程"
+        placeholder-class="ph"
+        value="{{formTitle}}"
+        bindinput="onTitle"
+        maxlength="20"
+      />
+    </view>
+
+    <view class="form-row">
+      <view class="form-label">描述</view>
+      <input
+        class="field"
+        placeholder="一句话说说（可以不填）"
+        placeholder-class="ph"
+        value="{{formDesc}}"
+        bindinput="onDesc"
+        maxlength="40"
+      />
+    </view>
+
+    <view class="form-actions">
+      <view class="px-btn form-btn" hover-class="px-btn-hover" bindtap="save">保存</view>
+      <view
+        wx:if="{{editingId}}"
+        class="px-btn form-btn form-btn-ghost"
+        hover-class="px-btn-hover"
+        bindtap="resetForm"
+      >取消</view>
+      <view
+        wx:if="{{editingId}}"
+        class="px-btn form-btn form-btn-del"
+        hover-class="px-btn-hover"
+        bindtap="remove"
+      >删除</view>
+    </view>
+  </view>
+
+  <!-- 底部草地 -->
+  <view class="page-foot">
+    <view class="grass-strip"></view>
+    <view class="end-note">路还长，慢慢走</view>
+  </view>
+
+
+  <undo-bar show="{{undoShow}}" seq="{{undoSeq}}" text="{{undoText}}" bind:undo="onUndo" bind:close="onUndoClose" />
+</view>

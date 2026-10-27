@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "个人经历",
+  "usingComponents": {
+    "undo-bar": "/components/undo-bar/index"
+  }
+}

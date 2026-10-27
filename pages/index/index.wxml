@@ -1,0 +1,52 @@
+<!-- pages/index/index.wxml —— 首页 -->
+
+<view class="page-wrap">
+
+  <!-- 像素风景横幅：天空 / 太阳 / 云 / 山脉 / 大海 / 草地 / 花 -->
+  <view class="scene-box">
+    <view class="scene"></view>
+  </view>
+
+  <view class="hero px-card">
+
+    <view class="spark sp1"></view>
+    <view class="spark sp2"></view>
+
+    <view class="badge-row">
+      <view class="badge">PLAYER 1</view>
+      <view class="badge badge-sea">ONLINE</view>
+    </view>
+
+    <view class="avatar-frame">
+      <image class="avatar-img" src="/images/avatar.png" mode="aspectFill"></image>
+    </view>
+
+    <view class="hero-name">{{profile.name}}</view>
+
+    <view class="banner">
+      <view class="banner-text">{{profile.signature}}</view>
+    </view>
+
+    <view class="star-line">★ ★ ★ ★ ★</view>
+  </view>
+
+  <view class="section-label">— SELECT MODE —</view>
+
+  <view class="grid">
+    <view
+      class="entry entry-{{item.accent}}"
+      wx:for="{{entries}}"
+      wx:key="text"
+      hover-class="entry-hover"
+      data-path="{{item.path}}"
+      data-type="{{item.type}}"
+      bindtap="go"
+    >
+      <view class="entry-ico ico {{item.icon}}"></view>
+      <view class="entry-text">{{item.text}}</view>
+    </view>
+  </view>
+
+  <view class="footer">— THANK YOU FOR PLAYING —</view>
+
+</view>

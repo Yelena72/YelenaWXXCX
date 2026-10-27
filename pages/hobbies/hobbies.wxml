@@ -1,0 +1,76 @@
+<!-- pages/hobbies/hobbies.wxml —— 兴趣爱好 -->
+
+<view class="page-wrap">
+
+  <view class="tip-line">点任意一张卡片，可以修改或删除</view>
+
+  <!-- 兴趣卡片 -->
+  <view class="grid">
+    <view
+      class="card"
+      wx:for="{{list}}"
+      wx:key="id"
+      hover-class="px-card-hover"
+      data-id="{{item.id}}"
+      bindtap="edit"
+    >
+      <view class="card-ico ico {{item.icon}}"></view>
+      <view class="name">{{item.name}}</view>
+      <view wx:if="{{item.desc}}" class="desc">{{item.desc}}</view>
+    </view>
+  </view>
+
+  <view wx:if="{{list.length === 0}}" class="empty">还没有兴趣，在下面加一个吧</view>
+
+  <!-- 添加 / 修改 -->
+  <view class="px-card">
+    <view class="px-title">{{editingId ? '修改兴趣' : '添加兴趣'}}</view>
+
+    <view class="icons">
+      <view
+        class="icon-chip {{formIcon === ic ? 'on' : ''}}"
+        wx:for="{{iconList}}"
+        wx:for-item="ic"
+        wx:key="*this"
+        data-icon="{{ic}}"
+        bindtap="pickIcon"
+      >
+        <view class="ico {{ic}} icon-preview"></view>
+      </view>
+    </view>
+
+    <input
+      class="field"
+      placeholder="兴趣名称，比如：摄影"
+      placeholder-class="ph"
+      value="{{formName}}"
+      bindinput="onName"
+      bindblur="onBlur"
+      focus="{{focusField === 'name'}}"
+      maxlength="10"
+      cursor-spacing="24"
+    />
+
+    <input
+      class="field"
+      placeholder="一句话描述（可以不填）"
+      placeholder-class="ph"
+      value="{{formDesc}}"
+      bindinput="onDesc"
+      maxlength="20"
+    />
+
+    <view class="form-actions">
+      <view class="px-btn form-btn" hover-class="px-btn-hover" bindtap="save">保存</view>
+      <view
+        wx:if="{{editingId}}"
+        class="px-btn form-btn form-btn-del"
+        hover-class="px-btn-hover"
+        bindtap="remove"
+      >删除</view>
+    </view>
+  </view>
+
+
+  <undo-bar show="{{undoShow}}" seq="{{undoSeq}}" text="{{undoText}}" bind:undo="onUndo" bind:close="onUndoClose" />
+</view>

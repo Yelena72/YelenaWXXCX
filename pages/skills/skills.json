@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "想学的技能",
+  "usingComponents": {
+    "undo-bar": "/components/undo-bar/index"
+  }
+}

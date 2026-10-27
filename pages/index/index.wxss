@@ -1,0 +1,221 @@
+/* pages/index/index.wxss —— 首页 */
+
+/* 风景横幅外框 */
+.scene-box {
+  width: 100%;
+  height: 347rpx;
+  border: 6rpx solid #2C3E66;
+  box-shadow: 10rpx 10rpx 0 rgba(44, 62, 102, 0.18);
+  box-sizing: border-box;
+  margin-bottom: 38rpx;
+  overflow: hidden;
+}
+
+/* 顶部卡片：淡天空渐变，像清晨的天空 */
+/* 入场浮现后开始轻轻上下浮动 */
+.page-wrap > .px-card.hero {
+  animation:
+    pxRise 0.5s ease-out backwards,
+    pxFloatSoft 5.5s ease-in-out 1s infinite;
+}
+
+.hero {
+  padding: 34rpx 32rpx 32rpx;
+  text-align: center;
+  background-image: linear-gradient(180deg, #DFF6FF 0%, #FFF7DC 62%, #FFE9B8 100%);
+}
+
+/* 角落像素十字星光 */
+.spark {
+  position: absolute;
+  width: 10rpx;
+  height: 10rpx;
+  background: currentColor;
+  box-shadow:
+    -10rpx 0 0 currentColor,
+    10rpx 0 0 currentColor,
+    0 -10rpx 0 currentColor,
+    0 10rpx 0 currentColor;
+}
+
+.sp1 {
+  color: #FFB93C;
+  top: 228rpx;
+  left: 28rpx;
+}
+
+.sp2 {
+  color: #4FC3F7;
+  top: 228rpx;
+  right: 28rpx;
+}
+
+.badge-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 32rpx;
+}
+
+/* 头像框：海蓝渐变 */
+.avatar-frame {
+  width: 184rpx;
+  height: 184rpx;
+  margin: 0 auto 30rpx;
+  padding: 6rpx;
+  background-image: linear-gradient(180deg, #8FE3FF 0%, #3FB0EC 100%);
+  border: 6rpx solid #2C3E66;
+  box-shadow: 10rpx 10rpx 0 rgba(44, 62, 102, 0.18);
+  box-sizing: border-box;
+}
+
+.avatar-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 4rpx solid #2C3E66;
+  box-sizing: border-box;
+}
+
+.hero-name {
+  font-size: 60rpx;
+  color: #2C3E66;
+  letter-spacing: 6rpx;
+  margin-bottom: 24rpx;
+}
+
+/* 口号条：海水蓝渐变 */
+.banner {
+  display: inline-block;
+  padding: 12rpx 26rpx 10rpx;
+  background-image: linear-gradient(180deg, #5BC8F5 0%, #2A8FE0 100%);
+  border: 4rpx solid #2C3E66;
+  box-shadow: 5rpx 5rpx 0 rgba(44, 62, 102, 0.18);
+}
+
+.banner-text {
+  font-size: 24rpx;
+  color: #FFFFFF;
+  letter-spacing: 2rpx;
+}
+
+.star-line {
+  margin-top: 26rpx;
+  font-size: 24rpx;
+  color: #FFB93C;
+  letter-spacing: 10rpx;
+}
+
+.section-label {
+  text-align: center;
+  font-size: 24rpx;
+  letter-spacing: 6rpx;
+  color: #5B6B95;
+  margin: 4rpx 0 28rpx;
+}
+
+/* ---------- 入口卡片 ---------- */
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.entry {
+  position: relative;
+  width: 48%;
+  box-sizing: border-box;
+  background-color: #FFFFFF;
+  background-image: linear-gradient(180deg, #FFFFFF 0%, #F4FAFF 100%);
+  color: #2C3E66;
+  border: 6rpx solid #2C3E66;
+  padding: 26rpx 12rpx 22rpx;
+  margin-bottom: 36rpx;
+  text-align: center;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+/* 每个入口一种彩色投影：海洋、阳光、花朵、草地、山脉、天空、浆果 */
+.entry-sea { box-shadow: 9rpx 9rpx 0 #4FC3F7; }
+.entry-sun { box-shadow: 9rpx 9rpx 0 #FFC845; }
+.entry-flower { box-shadow: 9rpx 9rpx 0 #FF8FC7; }
+.entry-grass { box-shadow: 9rpx 9rpx 0 #6FD070; }
+.entry-mountain { box-shadow: 9rpx 9rpx 0 #9B8CF0; }
+.entry-sky { box-shadow: 9rpx 9rpx 0 #63B8FF; }
+.entry-berry { box-shadow: 9rpx 9rpx 0 #FF7A6B; }
+.entry-gold { box-shadow: 9rpx 9rpx 0 #FFB93C; }
+
+.entry.entry-hover {
+  transform: translate(9rpx, 9rpx);
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  background-image: linear-gradient(180deg, #FFFFFF 0%, #E8F6FF 100%);
+}
+
+.entry-ico {
+  width: 96rpx;
+  height: 96rpx;
+  margin: 0 auto 16rpx;
+  transition: transform 0.15s ease;
+}
+
+/* 按下入口时，图标轻轻放大 */
+.entry-hover .entry-ico {
+  transform: scale(1.14);
+}
+
+.entry-text {
+  font-size: 28rpx;
+  color: #2C3E66;
+  letter-spacing: 2rpx;
+}
+
+.footer {
+  text-align: center;
+  font-size: 24rpx;
+  letter-spacing: 4rpx;
+  color: #7A8FB5;
+  margin-top: 10rpx;
+}
+
+/* ---------------- 动效 ---------------- */
+
+/* 风景横幅：从下往上浮现 */
+.scene-box {
+  animation: pxRise 0.5s ease-out backwards;
+}
+
+/* 头像：慢慢上下浮 */
+.avatar-frame {
+  animation: pxFloat 3.4s ease-in-out infinite;
+}
+
+/* ONLINE 徽章：呼吸闪烁 */
+.badge-sea {
+  animation: pxBlink 1.8s ease-in-out infinite;
+}
+
+/* 角落星光：一闪一闪 */
+.spark {
+  animation: pxTwinkle 2.4s ease-in-out infinite;
+}
+
+.sp1 {
+  animation-delay: 0.3s;
+}
+
+.sp2 {
+  animation-delay: 0.9s;
+}
+
+/* 七个入口：依次弹出 */
+.grid .entry {
+  animation: pxPop 0.42s ease-out backwards;
+}
+
+.grid .entry:nth-child(1) { animation-delay: 0.16s; }
+.grid .entry:nth-child(2) { animation-delay: 0.20s; }
+.grid .entry:nth-child(3) { animation-delay: 0.24s; }
+.grid .entry:nth-child(4) { animation-delay: 0.28s; }
+.grid .entry:nth-child(5) { animation-delay: 0.32s; }
+.grid .entry:nth-child(6) { animation-delay: 0.36s; }
+.grid .entry:nth-child(7) { animation-delay: 0.40s; }
+.grid .entry:nth-child(8) { animation-delay: 0.44s; }

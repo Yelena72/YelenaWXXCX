@@ -1,0 +1,6 @@
+<!-- components/undo-bar/index.wxml —— 删除后的撤销条 -->
+
+<view wx:if="{{visible}}" class="undo-bar">
+  <text class="undo-text">{{text}}</text>
+  <view class="undo-btn" hover-class="undo-btn-hover" bindtap="onUndo">撤销</view>
+</view>

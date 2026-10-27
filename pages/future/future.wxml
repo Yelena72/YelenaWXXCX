@@ -1,0 +1,140 @@
+<!-- pages/future/future.wxml —— 未来展望 -->
+
+<view class="page-wrap">
+
+  <!-- 顶部说明 -->
+  <view class="head px-card" hover-class="px-card-hover">
+    <view class="head-ico ico ico-future"></view>
+    <view class="head-text">
+      <view class="head-title">未来展望</view>
+      <view class="head-sub">一共 {{total}} 个念想</view>
+    </view>
+  </view>
+
+  <!-- 三块，统一用大图卡 -->
+  <view class="section" wx:for="{{sections}}" wx:key="key" wx:for-item="sec">
+
+    <view class="section-head">
+      <view class="section-bar" style="background-color: {{sec.color}};"></view>
+      <view class="section-name">{{sec.name}}</view>
+      <view class="section-desc">{{sec.desc}}</view>
+    </view>
+
+    <view
+      class="wish px-card {{editingId === w.id ? 'wish-editing' : ''}}"
+      wx:for="{{sec.items}}"
+      wx:for-item="w"
+      wx:key="id"
+      hover-class="px-card-hover"
+      data-id="{{w.id}}"
+      bindtap="editWish"
+      bindlongpress="removeWish"
+    >
+      <view class="wish-media">
+        <image wx:if="{{w.image}}" class="wish-img" src="{{w.image}}" mode="aspectFill"></image>
+        <view wx:else class="wish-art scene-art scene-{{w.scene}}"></view>
+        <view class="wish-no">{{w.no}}</view>
+      </view>
+
+      <view class="wish-body">
+        <view class="wish-text">{{w.text}}</view>
+        <view wx:if="{{w.note}}" class="wish-note">{{w.note}}</view>
+        <view wx:if="{{w.when}}" class="wish-when">{{w.when}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 添加按钮 -->
+  <view class="add-wish" hover-class="add-wish-hover" bindtap="openForm">+ 添加一个展望</view>
+
+  <view class="wish-tip">点任意一张卡片可以修改，长按可以删除</view>
+
+  <!-- 添加 / 修改表单 -->
+  <view wx:if="{{showForm}}" class="mask" bindtap="closeForm">
+    <view class="sheet" catchtap="noop">
+      <view class="sheet-title">{{editingId ? '修改展望' : '添加展望'}}</view>
+
+      <view class="sheet-body">
+        <view class="field-label">放在哪一块</view>
+        <view class="chips">
+          <view
+            class="chip {{formGroup === g.key ? 'on' : ''}}"
+            wx:for="{{groups}}"
+            wx:for-item="g"
+            wx:key="key"
+            data-key="{{g.key}}"
+            bindtap="pickGroup"
+          >{{g.name}}</view>
+        </view>
+
+        <view class="field-label">写点内容</view>
+        <input
+          class="field"
+          placeholder="比如：去冰岛看一次极光"
+          placeholder-class="ph"
+          value="{{formText}}"
+          bindinput="onText"
+          focus="{{formFocus}}"
+          maxlength="30"
+          cursor-spacing="24"
+        />
+
+        <input
+          class="field"
+          placeholder="补充一句（可以不填）"
+          placeholder-class="ph"
+          value="{{formNote}}"
+          bindinput="onNote"
+        />
+
+        <input
+          class="field"
+          placeholder="时间（可以不填）"
+          placeholder-class="ph"
+          value="{{formWhen}}"
+          bindinput="onWhen"
+        />
+
+        <view class="field-label">选一张配图</view>
+        <view class="scenes">
+          <view
+            class="scene-chip {{formScene === s.key && !formImage ? 'on' : ''}}"
+            wx:for="{{scenes}}"
+            wx:for-item="s"
+            wx:key="key"
+            data-key="{{s.key}}"
+            bindtap="pickScene"
+          >
+            <view class="scene-thumb scene-art scene-{{s.key}}"></view>
+            <view class="scene-name">{{s.name}}</view>
+          </view>
+        </view>
+
+        <view class="upload-row">
+          <view class="upload-btn" hover-class="upload-btn-hover" bindtap="chooseImage">从相册选一张</view>
+
+          <view wx:if="{{formImage}}" class="upload-preview">
+            <image class="upload-img" src="{{formImage}}" mode="aspectFill"></image>
+            <view class="upload-clear" bindtap="clearImage">✕</view>
+          </view>
+        </view>
+
+        <view class="upload-tip">上面 5 张是自带的像素图，不用授权；想用自己的照片才要点相册</view>
+      </view>
+
+      <view class="sheet-actions">
+        <view
+          wx:if="{{editingId}}"
+          class="btn-ghost btn-del"
+          hover-class="btn-del-hover"
+          bindtap="removeEditing"
+        >删除</view>
+        <view class="btn-ghost" hover-class="btn-ghost-hover" bindtap="closeForm">取消</view>
+        <view class="btn-main" hover-class="btn-main-hover" bindtap="saveWish">保存</view>
+      </view>
+    </view>
+  </view>
+
+
+  <undo-bar show="{{undoShow}}" seq="{{undoSeq}}" text="{{undoText}}" bind:undo="onUndo" bind:close="onUndoClose" />
+</view>
