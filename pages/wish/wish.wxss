@@ -1,0 +1,128 @@
+/* pages/wish/wish.wxss —— 愿望详情 */
+
+@import "../../styles/scenes.wxss";
+
+.page-wrap {
+  padding-bottom: 140rpx;
+}
+
+/* ---------------- 卡片 ---------------- */
+.detail {
+  padding: 0;
+  overflow: hidden;
+}
+
+.media {
+  position: relative;
+  width: 100%;
+  height: 380rpx;
+  background: #EAF6FF;
+  border-bottom: 6rpx solid #2C3E66;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.media-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.media-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.body {
+  padding: 34rpx;
+}
+
+/* 分组小标签 */
+.group {
+  display: inline-block;
+  font-size: 24rpx;
+  color: #FFFFFF;
+  padding: 6rpx 22rpx 4rpx;
+  border: 4rpx solid #2C3E66;
+  box-shadow: 4rpx 4rpx 0 rgba(44, 62, 102, 0.18);
+  margin-bottom: 24rpx;
+}
+
+/* 正文 */
+.text {
+  font-size: 36rpx;
+  line-height: 1.7;
+  color: #2C3E66;
+  letter-spacing: 1rpx;
+  word-break: break-all;
+}
+
+/* 补充说明 */
+.note {
+  font-size: 26rpx;
+  line-height: 1.9;
+  color: #6B7EA8;
+  margin-top: 20rpx;
+  padding-left: 20rpx;
+  border-left: 6rpx solid #C9DDF0;
+}
+
+/* 时间 / 配图 */
+.meta {
+  margin-top: 30rpx;
+  padding-top: 24rpx;
+  border-top: 4rpx dashed #C9DDF0;
+}
+
+.meta-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10rpx;
+}
+
+.meta-label {
+  width: 90rpx;
+  font-size: 24rpx;
+  color: #9AB0D0;
+  flex-shrink: 0;
+}
+
+.meta-value {
+  font-size: 26rpx;
+  color: #5B6B95;
+}
+
+/* ---------------- 底部按钮 ---------------- */
+.actions {
+  display: flex;
+  margin-top: 10rpx;
+}
+
+.btn {
+  flex: 1;
+  height: 96rpx;
+  line-height: 88rpx;
+  text-align: center;
+  font-size: 30rpx;
+  border: 5rpx solid #2C3E66;
+  box-sizing: border-box;
+}
+
+.btn-ghost {
+  color: #2C3E66;
+  background: #FFFFFF;
+  margin-right: 20rpx;
+  box-shadow: 6rpx 6rpx 0 rgba(44, 62, 102, 0.16);
+}
+
+.btn-danger {
+  color: #FFFFFF;
+  background-image: linear-gradient(180deg, #FF9B8C 0%, #E5544B 100%);
+  box-shadow: 6rpx 6rpx 0 rgba(44, 62, 102, 0.18);
+}
+
+.btn-hover {
+  transform: translate(6rpx, 6rpx);
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}

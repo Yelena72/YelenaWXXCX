@@ -1,44 +1,128 @@
 <!-- pages/skills/skills.wxml —— 想学的技能 -->
 
-<view class="page-wrap">
+<!-- 拖动卡片排序时要锁住页面滚动，所以整个页面放在 scroll-view 里 -->
+<scroll-view
+  class="page-scroll"
+  scroll-y="{{!dragging}}"
+  scroll-with-animation
+  scroll-into-view="{{scrollTo}}"
+>
+  <view class="page-wrap">
 
-  <!-- 概览 -->
-  <view class="px-card summary" hover-class="px-card-hover">
-    <view class="sum-item">
-      <view class="sum-label">正在学的</view>
-      <view class="sum-num">{{list.length}}<text class="sum-unit">项</text></view>
+    <!-- 概览 -->
+    <view class="px-card summary" hover-class="px-card-hover">
+      <view class="sum-item">
+        <view class="sum-label">正在学的</view>
+        <view class="sum-num">{{list.length}}<text class="sum-unit">项</text></view>
+      </view>
+      <view class="sum-divider"></view>
+      <view class="sum-item">
+        <view class="sum-label">平均进度</view>
+        <view class="sum-num">{{avg}}<text class="sum-unit">%</text></view>
+      </view>
     </view>
-    <view class="sum-divider"></view>
-    <view class="sum-item">
-      <view class="sum-label">平均进度</view>
-      <view class="sum-num">{{avg}}<text class="sum-unit">%</text></view>
+
+    <view class="tip-line">点卡片看小标题，长按卡片可以拖动排序</view>
+
+    <!-- 技能列表 -->
+    <view
+      class="px-card skill {{dragIndex === index ? 'drag-on' : ''}}"
+      wx:for="{{list}}"
+      wx:key="id"
+      wx:for-index="index"
+      hover-class="px-card-hover"
+      style="{{dragging ? 'transform: translate3d(' + item.tx + 'px, ' + item.ty + 'px, 0);' : ''}}"
+      data-id="{{item.id}}"
+      bindtap="openDetail"
+      bindlongpress="onDragStart"
+      bindtouchmove="onDragMove"
+      bindtouchend="onDragEnd"
+      bindtouchcancel="onDragEnd"
+    >
+      <view class="head">
+        <view class="name">{{item.name}}</view>
+        <view class="pct">{{item.percent}}%</view>
+      </view>
+
+      <view class="bar">
+        <view class="fill" style="width: {{item.percent}}%; background-color: {{item.color}};"></view>
+      </view>
+
+      <view wx:if="{{item.note}}" class="note">{{item.note}}</view>
+
+      <view class="ops" catchlongpress="noop">
+        <view class="sub-count" data-id="{{item.id}}" catchtap="openDetail">{{item.subCount}} 个小标题 ›</view>
+        <view class="op" data-id="{{item.id}}" catchtap="edit">修改</view>
+        <view class="op op-del" data-id="{{item.id}}" catchtap="remove">删除</view>
+      </view>
     </view>
+
+    <view wx:if="{{list.length === 0}}" class="empty">还没有技能，在下面加一个吧</view>
+
+    <!-- 添加 / 修改 -->
+    <view class="px-card" id="skill-form">
+      <view class="px-title">{{editingId ? '修改技能' : '添加技能'}}</view>
+
+      <input
+        class="field"
+        placeholder="技能名称，比如：Python"
+        placeholder-class="ph"
+        value="{{formName}}"
+        bindinput="onName"
+        bindblur="onBlur"
+        focus="{{focusField === 'name'}}"
+        maxlength="16"
+        cursor-spacing="24"
+      />
+
+      <view class="slider-row">
+        <text class="slider-label">进度</text>
+        <slider
+          class="slider"
+          min="0"
+          max="100"
+          step="5"
+          value="{{formPercent}}"
+          bindchange="onPercent"
+          bindchanging="onPercent"
+          activeColor="#4FC3F7"
+          backgroundColor="#E8F4FF"
+          block-size="24"
+          block-color="#2C3E66"
+        />
+        <text class="slider-val">{{formPercent}}%</text>
+      </view>
+
+      <input
+        class="field"
+        placeholder="备注一句（可以不填）"
+        placeholder-class="ph"
+        value="{{formNote}}"
+        bindinput="onNote"
+        maxlength="24"
+        cursor-spacing="24"
+      />
+
+      <view class="form-actions">
+        <view class="px-btn form-btn" hover-class="px-btn-hover" bindtap="save">保存</view>
+        <view
+          wx:if="{{editingId}}"
+          class="px-btn form-btn form-btn-ghost"
+          hover-class="px-btn-hover"
+          bindtap="cancelEdit"
+        >取消</view>
+      </view>
+    </view>
+
   </view>
+</scroll-view>
 
-  <!-- 技能列表 -->
-  <view class="px-card skill" wx:for="{{list}}" wx:key="id" hover-class="px-card-hover">
-    <view class="head">
-      <view class="name">{{item.name}}</view>
-      <view class="pct">{{item.percent}}%</view>
-    </view>
+<undo-bar show="{{undoShow}}" seq="{{undoSeq}}" text="{{undoText}}" bind:undo="onUndo" bind:close="onUndoClose" />
 
-    <view class="bar">
-      <view class="fill" style="width: {{item.percent}}%; background-color: {{item.color}};"></view>
-    </view>
-
-    <view wx:if="{{item.note}}" class="note">{{item.note}}</view>
-
-    <view class="ops">
-      <view class="op" data-id="{{item.id}}" bindtap="edit">修改</view>
-      <view class="op op-del" data-id="{{item.id}}" bindtap="remove">删除</view>
-    </view>
-  </view>
-
-  <view wx:if="{{list.length === 0}}" class="empty">还没有技能，在下面加一个吧</view>
-
-  <!-- 添加 / 修改 -->
-  <view class="px-card">
-    <view class="px-title">{{editingId ? '修改技能' : '添加技能'}}</view>
+<!-- ================= 修改技能：屏幕中间的弹窗 ================= -->
+<view wx:if="{{editShow}}" class="pop-mask" style="padding-bottom: {{kbH}}px;" bindtap="closeEdit">
+  <view class="pop-dialog" catchtap="noop">
+    <view class="px-title">修改技能</view>
 
     <input
       class="field"
@@ -46,10 +130,9 @@
       placeholder-class="ph"
       value="{{formName}}"
       bindinput="onName"
-      bindblur="onBlur"
-      focus="{{focusField === 'name'}}"
       maxlength="16"
       cursor-spacing="24"
+      adjust-position="{{false}}"
     />
 
     <view class="slider-row">
@@ -77,19 +160,13 @@
       value="{{formNote}}"
       bindinput="onNote"
       maxlength="24"
+      cursor-spacing="24"
+      adjust-position="{{false}}"
     />
 
     <view class="form-actions">
       <view class="px-btn form-btn" hover-class="px-btn-hover" bindtap="save">保存</view>
-      <view
-        wx:if="{{editingId}}"
-        class="px-btn form-btn form-btn-ghost"
-        hover-class="px-btn-hover"
-        bindtap="cancelEdit"
-      >取消</view>
+      <view class="px-btn form-btn form-btn-ghost" hover-class="px-btn-hover" bindtap="closeEdit">取消</view>
     </view>
   </view>
-
-
-  <undo-bar show="{{undoShow}}" seq="{{undoSeq}}" text="{{undoText}}" bind:undo="onUndo" bind:close="onUndoClose" />
 </view>

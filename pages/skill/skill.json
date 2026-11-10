@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "技能详情",
+  "usingComponents": {
+    "undo-bar": "/components/undo-bar/index"
+  }
+}

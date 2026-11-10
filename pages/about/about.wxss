@@ -158,7 +158,7 @@
   background: rgba(255, 255, 255, 0.55);
   border: 4rpx dashed #9AB0D0;
   box-sizing: border-box;
-  margin: -18rpx 0 44rpx;
+  margin: 0 0 40rpx;
 }
 
 .edit-btn-hover {

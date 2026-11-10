@@ -39,6 +39,28 @@ page {
   box-sizing: border-box;
 }
 
+/* 装进 scroll-view 的页面（待办 / 技能 / 兴趣）：底色跟着内容一起滚，
+   不然页面背景会钉在屏幕上不动，看着像换了张皮 */
+.page-scroll .page-wrap {
+  min-height: 100vh;
+  background-color: #D6F5FF;
+  background-image:
+    linear-gradient(rgba(44, 62, 102, 0.045) 2rpx, transparent 2rpx),
+    linear-gradient(90deg, rgba(44, 62, 102, 0.045) 2rpx, transparent 2rpx),
+    linear-gradient(
+      180deg,
+      #6FD3FF 0%,
+      #A8E8FF 12%,
+      #DFF7FF 26%,
+      #FFF8D6 42%,
+      #FFEFB8 54%,
+      #E4F7C4 68%,
+      #B6E98C 84%,
+      #8ADB6A 100%
+    );
+  background-size: 26rpx 26rpx, 26rpx 26rpx, auto;
+}
+
 /* ---------------- 白色卡片 ---------------- */
 /* 三层阴影：顶部高光 + 硬边投影 + 柔和环境阴影 = 悬浮感 */
 .px-card {
@@ -194,3 +216,64 @@ page {
 .page-wrap > .px-card:nth-child(2) { animation-delay: 0.10s; }
 .page-wrap > .px-card:nth-child(3) { animation-delay: 0.18s; }
 .page-wrap > .px-card:nth-child(4) { animation-delay: 0.26s; }
+
+/* ============================================================
+   修改弹窗：点「修改」在屏幕正中间弹出来
+   （键盘弹起来时，页面会给 mask 加 padding-bottom，弹窗自动往上让开）
+   ============================================================ */
+.pop-mask {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 500;
+  background: rgba(20, 30, 50, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 44rpx 36rpx;
+  box-sizing: border-box;
+}
+
+.pop-dialog {
+  width: 100%;
+  max-height: 100%;
+  overflow-y: auto;
+  background-color: #FFFFFF;
+  background-image: linear-gradient(180deg, #FFFFFF 0%, #F5FBFF 100%);
+  border: 6rpx solid #2C3E66;
+  box-shadow:
+    12rpx 12rpx 0 rgba(44, 62, 102, 0.18),
+    0 24rpx 48rpx rgba(44, 62, 102, 0.22);
+  padding: 32rpx;
+  box-sizing: border-box;
+  animation: popIn 0.22s ease-out;
+}
+
+@keyframes popIn {
+  0%   { opacity: 0; transform: scale(0.9) translateY(16rpx); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* 弹窗底部的一排按钮（页面自己没有 .form-actions 时用这个） */
+.pop-actions {
+  display: flex;
+  margin-top: 28rpx;
+}
+
+.pop-actions .px-btn {
+  flex: 1;
+  padding: 18rpx 0;
+  font-size: 28rpx;
+  margin-left: 14rpx;
+}
+
+.pop-actions .px-btn:first-child {
+  margin-left: 0;
+}
+
+/* 弹窗里的红色「删除」 */
+.pop-del {
+  background-image: linear-gradient(180deg, #FF9B8C 0%, #E5544B 100%);
+}

@@ -6,8 +6,10 @@
     "pages/experience/experience",
     "pages/hobbies/hobbies",
     "pages/skills/skills",
+    "pages/skill/skill",
     "pages/social/social",
     "pages/future/future",
+    "pages/wish/wish",
     "pages/wealth/wealth",
     "pages/todo/todo"
   ],

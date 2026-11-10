@@ -25,6 +25,7 @@
   margin-bottom: 36rpx;
   text-align: center;
   animation: pxPop 0.42s ease-out backwards;
+  transition: transform 0.18s ease;
 }
 
 .card:nth-child(4n + 1) { box-shadow: 9rpx 9rpx 0 #4FC3F7; }
@@ -124,4 +125,27 @@
 .form-btn-del {
   margin-left: 16rpx;
   background-image: linear-gradient(180deg, #FF9B8C 0%, #E5544B 100%);
+}
+
+.form-btn-ghost {
+  margin-left: 16rpx;
+  background-image: none;
+  background-color: #FFFFFF;
+  color: #2C3E66;
+}
+
+/* ---------------- 拖动排序 ---------------- */
+/* 页面装进 scroll-view，拖动时才不会被滚动抢走手势 */
+.page-scroll {
+  height: 100vh;
+}
+
+/* 拖动中的卡片：浮到最上面，先关掉过渡（要跟着手指走） */
+.card.drag-on {
+  z-index: 30;
+  transition: none !important;
+  box-shadow:
+    inset 0 5rpx 0 rgba(255, 255, 255, 0.95),
+    14rpx 16rpx 0 rgba(44, 62, 102, 0.18),
+    0 22rpx 38rpx rgba(44, 62, 102, 0.22);
 }

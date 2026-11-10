@@ -249,8 +249,6 @@
 }
 
 .todo-text {
-  flex: 1;
-  margin: 0 20rpx;
   font-size: 28rpx;
   line-height: 1.5;
   word-break: break-all;
@@ -359,4 +357,414 @@
   color: #9AB0D0;
   letter-spacing: 1rpx;
   margin: -26rpx 0 28rpx;
+}
+
+/* ============================================================
+   四象限相关
+   ============================================================ */
+
+/* ---------------- 四象限概览 ---------------- */
+.quad-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.quad {
+  width: 48.5%;
+  box-sizing: border-box;
+  padding: 14rpx 16rpx 16rpx;
+  margin-bottom: 16rpx;
+  background: #FFFFFF;
+  border: 4rpx solid #C9DDF0;
+  border-left-width: 12rpx;
+}
+
+.quad-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.quad-name {
+  font-size: 24rpx;
+  color: #2C3E66;
+  letter-spacing: 1rpx;
+}
+
+.quad-count {
+  font-size: 34rpx;
+  line-height: 1;
+}
+
+.quad-hint {
+  font-size: 24rpx;
+  color: #9AB0D0;
+  margin-top: 6rpx;
+}
+
+/* ---------------- 重要 / 紧急 ---------------- */
+.flag-row {
+  display: flex;
+  align-items: center;
+  margin-top: 20rpx;
+}
+
+.flag {
+  font-size: 24rpx;
+  color: #6B7EA8;
+  padding: 8rpx 26rpx;
+  margin-right: 14rpx;
+  background: #FFFFFF;
+  border: 4rpx solid #C9DDF0;
+  box-sizing: border-box;
+  transition: transform 0.12s ease;
+}
+
+.flag.on {
+  border-color: #2C3E66;
+  box-shadow: 4rpx 4rpx 0 rgba(44, 62, 102, 0.16);
+  transform: translate(-2rpx, -2rpx);
+}
+
+.flag.on.important {
+  color: #FFFFFF;
+  background-image: linear-gradient(180deg, #FF9B8C 0%, #E5544B 100%);
+}
+
+.flag.on.urgent {
+  color: #2C3E66;
+  background-image: linear-gradient(180deg, #FFE58A 0%, #FFB93C 100%);
+}
+
+.flag-result {
+  margin-left: auto;
+  font-size: 24rpx;
+  letter-spacing: 1rpx;
+}
+
+/* ---------------- 截止日期 ---------------- */
+.due-row {
+  display: flex;
+  align-items: center;
+  margin-top: 16rpx;
+}
+
+.due-pick {
+  font-size: 24rpx;
+  color: #9AB0D0;
+  padding: 10rpx 24rpx;
+  background: #FFFFFF;
+  border: 4rpx dashed #B8DCF5;
+  box-sizing: border-box;
+}
+
+.due-pick.has {
+  color: #2C3E66;
+  font-family: "PixelCN", monospace;
+  border-style: solid;
+  border-color: #2C3E66;
+  background: #F4FBFF;
+}
+
+.due-clear {
+  font-size: 24rpx;
+  color: #FF7A6B;
+  padding: 10rpx 20rpx;
+  margin-left: 14rpx;
+  border: 4rpx solid #F5C9C2;
+  background: #FFF6F4;
+  box-sizing: border-box;
+}
+
+.due-clear-hover {
+  background: #FFE6E1;
+}
+
+/* ---------------- 分区标题 ---------------- */
+.sec-head {
+  display: flex;
+  align-items: center;
+  margin: 30rpx 0 16rpx;
+}
+
+.sec-bar {
+  width: 12rpx;
+  height: 30rpx;
+  margin-right: 14rpx;
+  border: 3rpx solid #2C3E66;
+  box-sizing: border-box;
+}
+
+.sec-name {
+  font-size: 26rpx;
+  color: #2C3E66;
+  letter-spacing: 1rpx;
+}
+
+.sec-hint {
+  font-size: 24rpx;
+  color: #9AB0D0;
+  margin-left: 12rpx;
+}
+
+.sec-count {
+  margin-left: auto;
+  font-size: 22rpx;
+  color: #FFFFFF;
+  padding: 2rpx 16rpx;
+  border: 3rpx solid #2C3E66;
+  box-sizing: border-box;
+}
+
+/* ---------------- 一条待办内部的排版 ---------------- */
+.todo-main {
+  flex: 1;
+  margin: 0 18rpx;
+  min-width: 0;
+}
+
+/* DDL 小标签 */
+.due-chip {
+  display: inline-block;
+  margin-top: 10rpx;
+  font-size: 22rpx;
+  color: #5B6B95;
+  padding: 2rpx 14rpx;
+  background: #EEF7FF;
+  border: 3rpx solid #C9DDF0;
+  box-sizing: border-box;
+}
+
+.due-chip.warn {
+  color: #C93A3A;
+  background: #FFF1EE;
+  border-color: #F5B8AE;
+}
+
+/* 四象限那张卡：淡蓝底，跟进度卡区分开 */
+.quad-card {
+  background-image: linear-gradient(180deg, #F2FAFF 0%, #FFFFFF 62%);
+}
+
+/* ============================================================
+   四象限面板（每个格子直接装待办）
+   ============================================================ */
+.board {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.cell {
+  width: 48.5%;
+  min-height: 200rpx;
+  box-sizing: border-box;
+  padding: 16rpx 16rpx 18rpx;
+  margin-bottom: 20rpx;
+  background: #FFFFFF;
+  border: 4rpx solid #2C3E66;
+  border-left-width: 12rpx;
+  box-shadow: 6rpx 6rpx 0 rgba(44, 62, 102, 0.12);
+}
+
+.cell-empty {
+  background: #FAFDFF;
+  box-shadow: 4rpx 4rpx 0 rgba(44, 62, 102, 0.07);
+}
+
+.cell-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.cell-name {
+  font-size: 24rpx;
+  color: #2C3E66;
+  letter-spacing: 1rpx;
+}
+
+.cell-count {
+  font-size: 32rpx;
+  line-height: 1;
+}
+
+.cell-hint {
+  font-size: 22rpx;
+  color: #9AB0D0;
+  margin-top: 4rpx;
+}
+
+.cell-none {
+  font-size: 22rpx;
+  color: #C9DDF0;
+  margin-top: 16rpx;
+}
+
+/* 格子里面的一条待办 */
+.cell-item {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 16rpx;
+  padding-top: 14rpx;
+  border-top: 3rpx dashed #E2EEF9;
+}
+
+.cell-body {
+  flex: 1;
+  min-width: 0;
+  margin-left: 12rpx;
+}
+
+.mini-box {
+  width: 32rpx;
+  height: 32rpx;
+  margin-top: 2rpx;
+  background: #FFFFFF;
+  border: 4rpx solid #2C3E66;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  line-height: 24rpx;
+  text-align: center;
+  font-size: 22rpx;
+  color: #FFFFFF;
+}
+
+.mini-box.on {
+  background-image: linear-gradient(180deg, #9FE87A 0%, #45C25F 100%);
+}
+
+.cell-text {
+  font-size: 24rpx;
+  line-height: 1.45;
+  color: #2C3E66;
+  word-break: break-all;
+}
+
+.cell-text.done {
+  color: #9AB0D0;
+  text-decoration: line-through;
+}
+
+.cell-due {
+  display: inline-block;
+  margin-top: 8rpx;
+  font-size: 22rpx;
+  color: #5B6B95;
+  padding: 1rpx 10rpx;
+  background: #EEF7FF;
+  border: 2rpx solid #C9DDF0;
+}
+
+.cell-due.warn {
+  color: #C93A3A;
+  background: #FFF1EE;
+  border-color: #F5B8AE;
+}
+
+.board-tip {
+  text-align: center;
+  font-size: 24rpx;
+  color: #9AB0D0;
+  letter-spacing: 1rpx;
+  margin: 6rpx 0 32rpx;
+}
+
+/* ---------------- 已完成 ---------------- */
+.done-head {
+  display: flex;
+  align-items: center;
+  margin: 10rpx 0 14rpx;
+}
+
+.done-bar {
+  width: 12rpx;
+  height: 28rpx;
+  margin-right: 14rpx;
+  background: #45C25F;
+  border: 3rpx solid #2C3E66;
+  box-sizing: border-box;
+}
+
+.done-name {
+  font-size: 26rpx;
+  color: #2C3E66;
+  letter-spacing: 1rpx;
+}
+
+.done-count {
+  margin-left: auto;
+  font-size: 22rpx;
+  color: #FFFFFF;
+  background: #45C25F;
+  padding: 2rpx 16rpx;
+  border: 3rpx solid #2C3E66;
+}
+
+.done-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 16rpx 20rpx;
+  margin-bottom: 14rpx;
+  background: #FBFEFF;
+  border: 4rpx solid #CFE6F5;
+}
+
+/* 表单里的「删除这条」 */
+.cancel-row {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cancel-del {
+  color: #C93A3A;
+  border-color: #F0C9BE;
+  background: #FFF6F4;
+}
+
+/* 每条右边的小「改」 */
+.cell-edit {
+  flex-shrink: 0;
+  align-self: flex-start;
+  margin-left: 8rpx;
+  font-size: 22rpx;
+  color: #3E8FD0;
+  padding: 1rpx 10rpx;
+  border: 3rpx solid #B8DCF5;
+  background: #F2FAFF;
+  box-sizing: border-box;
+}
+
+/* 已完成那一栏的删除 */
+.cell-del {
+  flex-shrink: 0;
+  align-self: flex-start;
+  margin-left: 8rpx;
+  font-size: 24rpx;
+  color: #FF7A6B;
+  padding: 0 6rpx;
+  line-height: 1.2;
+}
+
+/* ============================================================
+   拖动排序
+   ============================================================ */
+/* 页面装进 scroll-view，拖动时才不会被滚动抢走手势 */
+.page-scroll {
+  height: 100vh;
+}
+
+/* 待办条：换位置时滑过去 */
+.cell-item {
+  transition: transform 0.18s ease;
+}
+
+/* 正在拖的那条：浮到最上面，先关掉过渡（要跟着手指走） */
+.cell-item.drag-on {
+  position: relative;
+  z-index: 30;
+  background: #FFFFFF;
+  transition: none !important;
+  box-shadow: 8rpx 10rpx 0 rgba(44, 62, 102, 0.18);
 }

@@ -23,6 +23,9 @@ const SCENES = [
 // 转发 / 分享到朋友圈
 const share = require('../../data/share.js').build('未来展望')
 
+// 按图片比例算配图区高度
+const imgbox = require('../../data/imgbox.js')
+
 Page({
   onShareAppMessage: share.app,
   onShareTimeline: share.timeline,
@@ -43,6 +46,8 @@ Page({
     formWhen: '',
     formScene: 'sea',
     formImage: '',
+    formImgW: 0,
+    formImgH: 0,
 
     undoShow: false,
     undoText: ''
@@ -51,6 +56,58 @@ Page({
   onLoad() {
     this.list = this.loadList()
     this.render()
+  },
+
+  // 从详情页回来：可能带回了「要修改」或「要删除」的指令
+  onShow() {
+    const app = getApp()
+
+    if (app.pendingWishDelete) {
+      const id = app.pendingWishDelete
+      app.pendingWishDelete = null
+      this.deleteWish(id)
+    }
+
+    if (app.pendingWishEdit) {
+      const id = app.pendingWishEdit
+      app.pendingWishEdit = null
+      this.openEditById(id)
+    }
+
+    // 老数据没有图片尺寸，进来时补一次（补完会自己刷新）
+    this.backfillSizes()
+  },
+
+  // 给「有图但没有尺寸」的愿望补上宽高，这样老愿望也能按比例显示
+  backfillSizes() {
+    const that = this
+    const todo = []
+
+    for (let i = 0; i < this.list.length; i++) {
+      const w = this.list[i]
+      if (w.image && !(w.imgW && w.imgH)) todo.push(w)
+    }
+
+    if (!todo.length) return
+
+    let left = todo.length
+    let changed = false
+
+    todo.forEach(function (w) {
+      imgbox.getSize(w.image, function (width, height) {
+        if (width && height) {
+          w.imgW = width
+          w.imgH = height
+          changed = true
+        }
+
+        left--
+        if (left === 0 && changed) {
+          that.persist()
+          that.render()
+        }
+      })
+    })
   },
 
   loadList() {
@@ -68,7 +125,9 @@ Page({
         note: src[i].note || '',
         when: src[i].when || '',
         scene: src[i].scene || 'sea',
-        image: ''
+        image: '',
+        imgW: 0,
+        imgH: 0
       })
     }
 
@@ -92,6 +151,11 @@ Page({
         const w = this.list[j]
         if (w.group !== g.key) continue
 
+        // 有自己选的图，就按图的比例算配图区高度；没有就用固定的风景框
+        const box = w.image
+          ? imgbox.mediaBox(w.imgW, w.imgH, 1100)
+          : { height: imgbox.DEFAULT_H, mode: 'aspectFill' }
+
         items.push({
           id: w.id,
           text: w.text,
@@ -99,6 +163,8 @@ Page({
           when: w.when,
           scene: w.scene,
           image: w.image,
+          mediaH: box.height,
+          imgMode: box.mode,
           no: items.length + 1
         })
       }
@@ -133,7 +199,9 @@ Page({
       formNote: '',
       formWhen: '',
       formScene: 'sea',
-      formImage: ''
+      formImage: '',
+      formImgW: 0,
+      formImgH: 0
     })
 
     // 等这层渲染完再置 true，不然 iOS 上键盘弹不出来
@@ -142,10 +210,27 @@ Page({
     }, 120)
   },
 
-  // 点卡片：把这一条填回表单，改成编辑模式
-  editWish(e) {
-    const that = this
+  // 点卡片：跳到详情页
+  openWish(e) {
     const id = e.currentTarget.dataset.id
+    if (!id && id !== 0) return
+
+    wx.navigateTo({
+      url: '/pages/wish/wish?id=' + id,
+      fail() {
+        wx.showToast({ title: '详情页打不开，请重新编译', icon: 'none' })
+      }
+    })
+  },
+
+  // 长按卡片：直接进编辑
+  editWish(e) {
+    this.openEditById(e.currentTarget.dataset.id)
+  },
+
+  // 按 id 打开编辑表单（详情页点了「修改」回来也走这里）
+  openEditById(id) {
+    const that = this
     let item = null
 
     for (let i = 0; i < this.list.length; i++) {
@@ -162,7 +247,9 @@ Page({
       formNote: item.note || '',
       formWhen: item.when || '',
       formScene: item.scene || 'sea',
-      formImage: item.image || ''
+      formImage: item.image || '',
+      formImgW: item.imgW || 0,
+      formImgH: item.imgH || 0
     })
 
     setTimeout(function () {
@@ -236,16 +323,30 @@ Page({
       // 只要相册，不要相机：少一项隐私声明，审核也少一个卡点
       sourceType: ['album'],
       success(res) {
-        const temp = res.tempFiles[0].tempFilePath
+        const f = res.tempFiles[0]
+        const temp = f.tempFilePath
+
+        function done(path) {
+          that.setData({ formImage: path })
+
+          // chooseMedia 一般会带宽高；万一没带，就再问一次文件本身
+          if (f.width && f.height) {
+            that.setData({ formImgW: f.width, formImgH: f.height })
+          } else {
+            imgbox.getSize(path, function (width, height) {
+              that.setData({ formImgW: width, formImgH: height })
+            })
+          }
+        }
 
         wx.getFileSystemManager().saveFile({
           tempFilePath: temp,
           success(r) {
-            that.setData({ formImage: r.savedFilePath })
+            done(r.savedFilePath)
           },
           fail() {
             // 存不下就先用临时路径（重启后失效）
-            that.setData({ formImage: temp })
+            done(temp)
           }
         })
       },
@@ -264,7 +365,7 @@ Page({
   },
 
   clearImage() {
-    this.setData({ formImage: '' })
+    this.setData({ formImage: '', formImgW: 0, formImgH: 0 })
   },
 
   saveWish() {
@@ -281,7 +382,10 @@ Page({
       note: String(this.data.formNote).trim(),
       when: String(this.data.formWhen).trim(),
       scene: this.data.formScene,
-      image: this.data.formImage
+      image: this.data.formImage,
+      // 记下原图尺寸，列表里按它的比例算显示框，图片就不会被裁
+      imgW: this.data.formImage ? (this.data.formImgW || 0) : 0,
+      imgH: this.data.formImage ? (this.data.formImgH || 0) : 0
     }
 
     const editingId = this.data.editingId
@@ -301,6 +405,8 @@ Page({
           this.list[i].when = data.when
           this.list[i].scene = data.scene
           this.list[i].image = data.image
+          this.list[i].imgW = data.imgW
+          this.list[i].imgH = data.imgH
           done = true
         }
       }
@@ -314,7 +420,9 @@ Page({
         note: data.note,
         when: data.when,
         scene: data.scene,
-        image: data.image
+        image: data.image,
+        imgW: data.imgW,
+        imgH: data.imgH
       })
     }
 
@@ -340,12 +448,7 @@ Page({
     })
   },
 
-  // 长按卡片删除
-  removeWish(e) {
-    this.deleteWish(e.currentTarget.dataset.id)
-  },
-
-  // 表单里的「删除」按钮
+  // 表单里的「删除」按钮（详情页的删除也是绕回这里走一遍）
   removeEditing() {
     this.deleteWish(this.data.editingId)
   },

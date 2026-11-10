@@ -3,6 +3,7 @@
 // 之后在小程序里加 / 改 / 删就行，不用再改代码。
 
 const content = require('../../data/content.js')
+const kbd = require('../../utils/kbd.js')
 
 const KEY = 'yelena_experience'
 
@@ -48,6 +49,10 @@ Page({
     formDesc: '',
     focusField: '', // 进入修改状态时把光标放进第一个输入框
 
+    // 修改弹窗
+    editShow: false,
+    kbH: 0,
+
     undoShow: false,
     undoText: ''
   },
@@ -55,6 +60,26 @@ Page({
   onLoad() {
     this.all = this.load()
     this.render()
+  },
+
+  onShow() {
+    kbd.bind(this)
+  },
+
+  onHide() {
+    kbd.unbind(this)
+  },
+
+  onUnload() {
+    kbd.unbind(this)
+  },
+
+  noop() {},
+
+  // 弹窗上的「取消」/ 点空白处
+  closeEdit() {
+    this.setData({ editShow: false, kbH: 0 })
+    this.resetForm()
   },
 
   // 第一次进来：把 content.js 里的经历搬过来
@@ -163,12 +188,13 @@ Page({
     this.persist()
     this.resetForm()
     this.render()
+    this.setData({ editShow: false, kbH: 0 })
 
     if (wx.vibrateShort) wx.vibrateShort({ type: 'light' })
     wx.showToast({ title: '已保存', icon: 'none' })
   },
 
-  // 点任意一段经历：填回下面的表单，可以改
+  // 点任意一段经历：中间弹窗里改
   edit(e) {
     const id = e.currentTarget.dataset.id
 
@@ -179,13 +205,11 @@ Page({
           formYear: this.all[i].year,
           formTitle: this.all[i].title,
           formDesc: this.all[i].desc || '',
-          focusField: 'year'
+          focusField: '',
+          editShow: true
         })
       }
     }
-
-    // 表单在页面最下面
-    wx.pageScrollTo({ scrollTop: 99999, duration: 220 })
   },
 
   // 删除：删完给 5 秒撤销
@@ -202,7 +226,8 @@ Page({
     this.persist()
     this.resetForm()
     this.render()
-    this.setData({ undoSeq: (this.data.undoSeq || 0) + 1,
+    this.setData({ editShow: false, kbH: 0,
+      undoSeq: (this.data.undoSeq || 0) + 1,
       undoShow: true, undoText: '已删除这段经历' })
   },
 

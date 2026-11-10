@@ -5,6 +5,8 @@
 const KEY = 'yelena_wealth'
 const HIDDEN_KEY = 'yelena_wealth_hidden' // 记住「隐藏金额」这个开关
 
+const kbd = require('../../utils/kbd.js')
+
 // 轻微震动反馈（真机上才有感觉）
 function buzz() {
   if (wx.vibrateShort) {
@@ -49,8 +51,32 @@ Page({
     formAmount: '',
     focusField: '', // 进入修改状态时把光标放进名称输入框
 
+    // 修改弹窗
+    editShow: false,
+    kbH: 0,
+
     undoShow: false,
     undoText: ''
+  },
+
+  onShow() {
+    kbd.bind(this)
+  },
+
+  onHide() {
+    kbd.unbind(this)
+  },
+
+  onUnload() {
+    kbd.unbind(this)
+  },
+
+  noop() {},
+
+  // 弹窗上的「取消」/ 点空白处
+  closeEdit() {
+    this.setData({ editShow: false, kbH: 0 })
+    this.resetForm()
   },
 
   onLoad() {
@@ -116,6 +142,7 @@ Page({
   },
 
   resetForm() {
+    this.originAmount = 0
     this.setData({
       editingId: '',
       formType: 'bank',
@@ -133,23 +160,32 @@ Page({
   save() {
     const name = String(this.data.formName).trim()
     const raw = String(this.data.formAmount).trim()
-    const amount = Math.round(Number(raw) * 100) / 100
 
     if (!name) {
       wx.showToast({ title: '给账户起个名字', icon: 'none' })
       return
     }
-    if (raw === '' || isNaN(amount)) {
-      wx.showToast({ title: '金额要填数字', icon: 'none' })
-      return
-    }
-    if (amount < 0) {
-      wx.showToast({ title: '金额不能是负数', icon: 'none' })
-      return
-    }
-    if (amount > 999999999) {
-      wx.showToast({ title: '这个数字太大了', icon: 'none' })
-      return
+
+    // 金额空着就当 0；修改已有账户时保持原金额不变
+    let amount = 0
+
+    if (raw === '') {
+      amount = this.data.editingId ? (this.originAmount || 0) : 0
+    } else {
+      amount = Math.round(Number(raw) * 100) / 100
+
+      if (isNaN(amount)) {
+        wx.showToast({ title: '金额要填数字', icon: 'none' })
+        return
+      }
+      if (amount < 0) {
+        wx.showToast({ title: '金额不能是负数', icon: 'none' })
+        return
+      }
+      if (amount > 999999999) {
+        wx.showToast({ title: '这个数字太大了', icon: 'none' })
+        return
+      }
     }
 
     const list = wx.getStorageSync(KEY) || []
@@ -175,6 +211,7 @@ Page({
     wx.setStorageSync(KEY, list)
     this.resetForm()
     this.render(list)
+    this.setData({ editShow: false, kbH: 0 })
     buzz()
     wx.showToast({ title: '已保存', icon: 'none' })
   },
@@ -192,16 +229,19 @@ Page({
     }
     if (!target) return
 
+    // 记住原来的金额：表单里金额留空时保持它不变
+    this.originAmount = Number(target.amount) || 0
+
     this.setData({
       editingId: String(target.id),
       formType: target.type,
       formName: target.name,
-      formAmount: String(target.amount),
-      focusField: 'name'
+      // 金额是 0 就不预填了，让输入框显示 placeholder，省得手动删那个 0
+      formAmount: Number(target.amount) ? String(target.amount) : '',
+      // 改账户十有八九是改余额，光标直接落在金额上
+      focusField: 'amount',
+      editShow: true
     })
-
-    // 表单在页面最下面
-    wx.pageScrollTo({ scrollTop: 99999, duration: 220 })
   },
 
   // 删除

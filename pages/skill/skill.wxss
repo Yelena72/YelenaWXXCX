@@ -1,0 +1,163 @@
+/* pages/skill/skill.wxss —— 技能详情 */
+
+.page-wrap {
+  padding-bottom: 60rpx;
+}
+
+/* ---------------- 顶部 ---------------- */
+.head-card {
+  background-image: linear-gradient(180deg, #F4FBFF 0%, #FFFFFF 62%);
+}
+
+.head-row {
+  display: flex;
+  align-items: center;
+}
+
+.head-bar {
+  width: 12rpx;
+  height: 40rpx;
+  margin-right: 16rpx;
+  border: 3rpx solid #2C3E66;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.head-title {
+  flex: 1;
+  font-size: 34rpx;
+  color: #2C3E66;
+  letter-spacing: 1rpx;
+  word-break: break-all;
+}
+
+.head-pct {
+  font-size: 32rpx;
+  flex-shrink: 0;
+  margin-left: 12rpx;
+}
+
+.bar {
+  height: 22rpx;
+  margin-top: 18rpx;
+  background: #E8F4FF;
+  border: 4rpx solid #2C3E66;
+  box-sizing: border-box;
+}
+
+.fill {
+  height: 100%;
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(44, 62, 102, 0.25) 0 4rpx,
+    transparent 4rpx 14rpx
+  );
+  transform-origin: left center;
+  animation: pxGrow 0.7s cubic-bezier(0.2, 0.8, 0.3, 1) backwards;
+}
+
+.head-note {
+  font-size: 24rpx;
+  color: #6B7EA8;
+  margin-top: 14rpx;
+}
+
+.head-meta {
+  font-size: 24rpx;
+  color: #9AB0D0;
+  margin-top: 10rpx;
+}
+
+/* ---------------- 小标题卡 ---------------- */
+.sub {
+  position: relative;
+  padding-right: 66rpx;
+}
+
+.sub-title {
+  font-size: 30rpx;
+  color: #2C3E66;
+  letter-spacing: 1rpx;
+  word-break: break-all;
+}
+
+.sub-desc {
+  font-size: 24rpx;
+  color: #6B7EA8;
+  line-height: 1.8;
+  margin-top: 10rpx;
+  word-break: break-all;
+}
+
+.sub-del {
+  position: absolute;
+  right: 24rpx;
+  top: 28rpx;
+  font-size: 28rpx;
+  color: #FF7A6B;
+  padding: 0 6rpx;
+}
+
+/* ---------------- 添加按钮 / 空状态 ---------------- */
+.add-sub {
+  height: 100rpx;
+  line-height: 96rpx;
+  text-align: center;
+  font-size: 26rpx;
+  color: #5B6B95;
+  background: rgba(255, 255, 255, 0.55);
+  border: 4rpx dashed #9AB0D0;
+  box-sizing: border-box;
+  margin-bottom: 50rpx;
+}
+
+.add-sub-hover {
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.empty {
+  text-align: center;
+  font-size: 24rpx;
+  color: #9AB0D0;
+  padding: 30rpx 0 40rpx;
+}
+
+/* ---------------- 表单 ---------------- */
+.field {
+  height: 80rpx;
+  box-sizing: border-box;
+  padding: 0 18rpx;
+  margin-bottom: 16rpx;
+  font-size: 28rpx;
+  font-family: "PixelCN", monospace;
+  color: #2C3E66;
+  background: #F4FBFF;
+  border: 4rpx solid #2C3E66;
+}
+
+.ph {
+  color: #9AB0D0;
+}
+
+.form-actions {
+  display: flex;
+  margin-top: 24rpx;
+}
+
+.form-btn {
+  flex: 1;
+  padding: 18rpx 0;
+  font-size: 24rpx;
+}
+
+.form-btn-ghost {
+  margin-left: 12rpx;
+  background-image: none;
+  background-color: #FFFFFF;
+  color: #2C3E66;
+}
+
+.form-btn-del {
+  margin-left: 12rpx;
+  background-image: linear-gradient(180deg, #FF9B8C 0%, #E5544B 100%);
+}

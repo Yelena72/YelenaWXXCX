@@ -168,3 +168,37 @@
   background-color: #FFFFFF;
   color: #2C3E66;
 }
+
+/* 卡片底部左侧：小标题数量（提示可以点进去） */
+.ops {
+  align-items: center;
+}
+
+.sub-count {
+  margin-right: auto;
+  font-size: 24rpx;
+  color: #3E8FD0;
+}
+
+/* ---------------- 拖动排序 ---------------- */
+/* 页面装进 scroll-view，拖动时才不会被滚动抢走手势 */
+.page-scroll {
+  height: 100vh;
+}
+
+.tip-line {
+  font-size: 24rpx;
+  color: #9AB0D0;
+  margin-bottom: 18rpx;
+  letter-spacing: 1rpx;
+}
+
+/* 正在拖的卡片：浮到最上面，先关掉过渡（要跟着手指走） */
+.drag-on {
+  z-index: 30;
+  transition: none !important;
+  box-shadow:
+    inset 0 5rpx 0 rgba(255, 255, 255, 0.95),
+    16rpx 18rpx 0 rgba(44, 62, 102, 0.16),
+    0 24rpx 40rpx rgba(44, 62, 102, 0.2);
+}

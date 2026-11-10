@@ -82,7 +82,7 @@
         type="digit"
         value="{{formAmount}}"
         bindinput="onAmount"
-        placeholder="如：12345.67"
+        placeholder="0"
         placeholder-class="ph"
       />
     </view>
@@ -102,4 +102,55 @@
 
 
   <undo-bar show="{{undoShow}}" seq="{{undoSeq}}" text="{{undoText}}" bind:undo="onUndo" bind:close="onUndoClose" />
+</view>
+
+<!-- ================= 修改账户：屏幕中间的弹窗 ================= -->
+<view wx:if="{{editShow}}" class="pop-mask" style="padding-bottom: {{kbH}}px;" bindtap="closeEdit">
+  <view class="pop-dialog" catchtap="noop">
+    <view class="px-title">修改账户</view>
+
+    <view class="form-row">
+      <view class="form-label">类型</view>
+      <view class="types">
+        <view class="type {{formType === 'bank' ? 'on' : ''}}" data-type="bank" bindtap="pickType">银行卡</view>
+        <view class="type {{formType === 'wechat' ? 'on' : ''}}" data-type="wechat" bindtap="pickType">微信</view>
+        <view class="type {{formType === 'alipay' ? 'on' : ''}}" data-type="alipay" bindtap="pickType">支付宝</view>
+        <view class="type {{formType === 'other' ? 'on' : ''}}" data-type="other" bindtap="pickType">其他</view>
+      </view>
+    </view>
+
+    <view class="form-row">
+      <view class="form-label">名称</view>
+      <input
+        class="form-input"
+        value="{{formName}}"
+        bindinput="onName"
+        placeholder="如：招商银行"
+        placeholder-class="ph"
+        cursor-spacing="24"
+        adjust-position="{{false}}"
+      />
+    </view>
+
+    <view class="form-row">
+      <view class="form-label">金额</view>
+      <input
+        class="form-input"
+        type="digit"
+        value="{{formAmount}}"
+        bindinput="onAmount"
+        bindblur="onBlur"
+        focus="{{focusField === 'amount'}}"
+        placeholder="0"
+        placeholder-class="ph"
+        cursor-spacing="24"
+        adjust-position="{{false}}"
+      />
+    </view>
+
+    <view class="form-actions">
+      <view class="px-btn form-btn" hover-class="px-btn-hover" bindtap="save">保存</view>
+      <view class="px-btn form-btn form-btn-ghost" hover-class="px-btn-hover" bindtap="closeEdit">取消</view>
+    </view>
+  </view>
 </view>

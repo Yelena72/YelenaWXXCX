@@ -111,3 +111,58 @@
 
   <undo-bar show="{{undoShow}}" seq="{{undoSeq}}" text="{{undoText}}" bind:undo="onUndo" bind:close="onUndoClose" />
 </view>
+
+<!-- ================= 修改经历：屏幕中间的弹窗 ================= -->
+<view wx:if="{{editShow}}" class="pop-mask" style="padding-bottom: {{kbH}}px;" bindtap="closeEdit">
+  <view class="pop-dialog" catchtap="noop">
+    <view class="px-title">修改经历</view>
+
+    <view class="form-row">
+      <view class="form-label">年份</view>
+      <input
+        class="field"
+        placeholder="如：2024"
+        placeholder-class="ph"
+        value="{{formYear}}"
+        bindinput="onYear"
+        maxlength="10"
+        cursor-spacing="24"
+        adjust-position="{{false}}"
+      />
+    </view>
+
+    <view class="form-row">
+      <view class="form-label">标题</view>
+      <input
+        class="field"
+        placeholder="如：第一次接触编程"
+        placeholder-class="ph"
+        value="{{formTitle}}"
+        bindinput="onTitle"
+        maxlength="20"
+        cursor-spacing="24"
+        adjust-position="{{false}}"
+      />
+    </view>
+
+    <view class="form-row">
+      <view class="form-label">描述</view>
+      <input
+        class="field"
+        placeholder="一句话说说（可以不填）"
+        placeholder-class="ph"
+        value="{{formDesc}}"
+        bindinput="onDesc"
+        maxlength="40"
+        cursor-spacing="24"
+        adjust-position="{{false}}"
+      />
+    </view>
+
+    <view class="form-actions">
+      <view class="px-btn form-btn" hover-class="px-btn-hover" bindtap="save">保存</view>
+      <view class="px-btn form-btn form-btn-ghost" hover-class="px-btn-hover" bindtap="closeEdit">取消</view>
+      <view class="px-btn form-btn form-btn-del" hover-class="px-btn-hover" bindtap="remove">删除</view>
+    </view>
+  </view>
+</view>

@@ -14,9 +14,6 @@
     </view>
   </view>
 
-  <!-- 编辑入口 -->
-  <view class="edit-btn" hover-class="edit-btn-hover" bindtap="openForm">修改我的资料</view>
-
   <!-- 属性面板 -->
   <view class="px-card" hover-class="px-card-hover">
     <view class="px-title">属性面板</view>
@@ -47,6 +44,9 @@
     <view class="px-title">关于我</view>
     <view class="intro">{{intro}}</view>
   </view>
+
+  <!-- 编辑入口（放页面最下面） -->
+  <view class="edit-btn" hover-class="edit-btn-hover" bindtap="openForm">修改我的资料</view>
 
   <!-- 底部草地 -->
   <view class="page-foot">

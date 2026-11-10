@@ -30,9 +30,19 @@ Page({
     ]
   },
 
-  // 从「关于我」改完资料回来，首页立刻同步
+  // 从「关于我」改完资料回来，首页立刻同步（标题栏也跟着改）
   onShow() {
-    this.setData({ profile: profileApi.getProfile() })
+    const profile = profileApi.getProfile()
+
+    this.setData({ profile: profile })
+
+    const name = String(profile.name || '').trim() || 'Yelena'
+    wx.setNavigationBarTitle({
+      title: name,
+      fail() {
+        // 万一设置失败（比如页面还没准备好），保持 json 里的默认标题就行
+      }
+    })
   },
 
   go(e) {

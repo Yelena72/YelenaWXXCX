@@ -1,36 +1,167 @@
-<!-- pages/todo/todo.wxml —— 待办事项 -->
+<!-- pages/todo/todo.wxml —— 待办事项（四象限） -->
 
-<view class="page-wrap">
+<!-- 拖动卡片排序时要锁住页面滚动，所以整个页面放在 scroll-view 里 -->
+<scroll-view
+  class="page-scroll"
+  scroll-y="{{!dragging}}"
+  scroll-with-animation
+  scroll-into-view="{{scrollTo}}"
+>
+  <view class="page-wrap">
 
-  <!-- 今日进度 -->
-  <view class="stat-card px-card" hover-class="px-card-hover">
-    <view class="stat-top">
-      <view class="stat-ico ico ico-todo"></view>
-      <view class="stat-mid">
-        <view class="stat-label">今日进度</view>
-        <view class="stat-nums">
-          <text class="n-done">{{doneCount}}</text>
-          <text class="n-total">/ {{total}}</text>
+    <!-- 完成进度 -->
+    <view class="stat-card px-card" hover-class="px-card-hover">
+      <view class="stat-top">
+        <view class="stat-ico ico ico-todo"></view>
+        <view class="stat-mid">
+          <view class="stat-label">完成进度</view>
+          <view class="stat-nums">
+            <text class="n-done">{{doneCount}}</text>
+            <text class="n-total">/ {{total}}</text>
+          </view>
+        </view>
+        <view class="stat-pct">{{percent}}%</view>
+      </view>
+
+      <view class="stat-bar">
+        <view class="stat-fill" style="width: {{percent}}%;"></view>
+      </view>
+
+      <view class="stat-note">{{note}}</view>
+    </view>
+
+    <!-- ============ 四象限面板：每个格子里装自己的待办 ============ -->
+    <view class="board">
+      <view
+        class="cell {{q.count === 0 ? 'cell-empty' : ''}}"
+        wx:for="{{board}}"
+        wx:key="key"
+        wx:for-item="q"
+        wx:for-index="qi"
+        id="cell-{{q.key}}"
+        style="border-left-color: {{q.color}};"
+      >
+        <view class="cell-head">
+          <text class="cell-name">{{q.name}}</text>
+          <text class="cell-count" style="color: {{q.color}};">{{q.count}}</text>
+        </view>
+        <view class="cell-hint">{{q.hint}}</view>
+
+        <view wx:if="{{q.count === 0}}" class="cell-none">空</view>
+
+        <view
+          class="cell-item {{dragging && dragQuad === q.key && dragIndex === ii ? 'drag-on' : ''}}"
+          wx:for="{{q.items}}"
+          wx:key="id"
+          wx:for-index="ii"
+          style="{{dragging && dragQuad === q.key ? 'transform: translate3d(' + item.tx + 'px, ' + item.ty + 'px, 0);' : ''}}"
+          data-id="{{item.id}}"
+          data-q="{{q.key}}"
+          bindtap="toggle"
+          bindlongpress="onDragStart"
+          bindtouchmove="onDragMove"
+          bindtouchend="onDragEnd"
+          bindtouchcancel="onDragEnd"
+        >
+          <view class="mini-box"></view>
+          <view class="cell-body">
+            <view class="cell-text">{{item.text}}</view>
+            <view wx:if="{{item.dueText}}" class="cell-due {{item.dueWarn ? 'warn' : ''}}">{{item.dueText}}</view>
+          </view>
+          <view class="cell-edit" data-id="{{item.id}}" catchtap="edit" catchlongpress="noop">改</view>
+          <view class="cell-del" data-id="{{item.id}}" catchtap="remove" catchlongpress="noop">✕</view>
         </view>
       </view>
-      <view class="stat-pct">{{percent}}%</view>
     </view>
 
-    <view class="stat-bar">
-      <view class="stat-fill" style="width: {{percent}}%;"></view>
+    <view class="board-tip">点一下勾选完成，长按可以拖动排序，点「改」可以修改</view>
+
+    <!-- 添加 / 修改 -->
+    <view class="px-card add-card {{editingId ? 'add-card-editing' : ''}}" id="add-card">
+      <view class="add-head">
+        <view class="add-plus ico ico-plus"></view>
+        <view class="px-title">{{editingId ? '修改待办' : '添加待办'}}</view>
+      </view>
+
+      <view class="input-row">
+        <input
+          class="input"
+          placeholder="今天想做什么？"
+          placeholder-class="ph"
+          value="{{input}}"
+          bindinput="onInput"
+          bindconfirm="save"
+          bindblur="onBlur"
+          focus="{{focusInput}}"
+          confirm-type="done"
+          cursor-spacing="24"
+        />
+        <view class="add-btn" hover-class="add-btn-hover" bindtap="save">{{editingId ? '存' : '加'}}</view>
+      </view>
+
+      <!-- 重要 / 紧急 -->
+      <view class="flag-row">
+        <view class="flag {{formImportant ? 'on important' : ''}}" bindtap="toggleImportant">重要</view>
+        <view class="flag {{formUrgent ? 'on urgent' : ''}}" bindtap="toggleUrgent">紧急</view>
+        <view class="flag-result" style="color: {{formQuadColor}};">→ {{formQuadName}}</view>
+      </view>
+
+      <!-- 截止日期 -->
+      <view class="due-row">
+        <picker mode="date" value="{{formDue || today}}" bindchange="onDue">
+          <view class="due-pick {{formDue ? 'has' : ''}}">{{formDue ? formDue : '＋ 截止日期'}}</view>
+        </picker>
+        <view wx:if="{{formDue}}" class="due-clear" hover-class="due-clear-hover" bindtap="clearDue">清除</view>
+      </view>
+
+      <view wx:if="{{editingId}}" class="cancel-row">
+        <view class="cancel cancel-del" hover-class="cancel-hover" bindtap="removeEditing">删除这条</view>
+        <view class="cancel" hover-class="cancel-hover" bindtap="cancelEdit">取消修改</view>
+      </view>
+      <view wx:else class="add-hint">重要 / 紧急点一下就能切换；不设日期也可以</view>
     </view>
 
-    <view class="stat-note">{{note}}</view>
+    <!-- 已完成 -->
+    <block wx:if="{{done.length > 0}}">
+      <view class="done-head">
+        <view class="done-bar"></view>
+        <view class="done-name">已完成</view>
+        <view class="done-count">{{done.length}}</view>
+      </view>
+
+      <view
+        class="done-item"
+        wx:for="{{done}}"
+        wx:key="id"
+        data-id="{{item.id}}"
+        bindtap="toggle"
+        bindlongpress="edit"
+      >
+        <view class="mini-box on">✓</view>
+        <view class="cell-body">
+          <view class="cell-text done">{{item.text}}</view>
+          <view wx:if="{{item.dueText}}" class="cell-due">{{item.dueText}}</view>
+        </view>
+        <view class="cell-edit" data-id="{{item.id}}" catchtap="edit" catchlongpress="noop">改</view>
+        <view class="cell-del" data-id="{{item.id}}" catchtap="remove" catchlongpress="noop">✕</view>
+      </view>
+    </block>
+
+    <!-- 底部：像素草地 + 寄语 -->
+    <view class="page-foot">
+      <view class="grass-strip"></view>
+      <view class="end-note">今天也要加油呀</view>
+    </view>
+
   </view>
+</scroll-view>
 
-  <view class="list-hint">点一行勾选完成，长按整条可以修改</view>
+<undo-bar show="{{undoShow}}" seq="{{undoSeq}}" text="{{undoText}}" bind:undo="onUndo" bind:close="onUndoClose" />
 
-  <!-- 添加 / 修改 -->
-  <view class="px-card add-card {{editingId ? 'add-card-editing' : ''}}">
-    <view class="add-head">
-      <view class="add-plus ico ico-plus"></view>
-      <view class="px-title">{{editingId ? '修改待办' : '添加待办'}}</view>
-    </view>
+<!-- ================= 修改待办：屏幕中间的弹窗 ================= -->
+<view wx:if="{{editShow}}" class="pop-mask" style="padding-bottom: {{kbH}}px;" bindtap="closeEdit">
+  <view class="pop-dialog" catchtap="noop">
+    <view class="px-title">修改待办</view>
 
     <view class="input-row">
       <input
@@ -39,81 +170,30 @@
         placeholder-class="ph"
         value="{{input}}"
         bindinput="onInput"
-        bindconfirm="add"
-        bindblur="onBlur"
-        focus="{{focusInput}}"
+        bindconfirm="save"
         confirm-type="done"
         cursor-spacing="24"
+        adjust-position="{{false}}"
       />
-      <view class="add-btn" hover-class="add-btn-hover" bindtap="add">{{editingId ? '存' : '加'}}</view>
     </view>
 
-    <view wx:if="{{editingId}}" class="cancel-row">
-      <view class="cancel" hover-class="cancel-hover" bindtap="cancelEdit">取消修改</view>
+    <view class="flag-row">
+      <view class="flag {{formImportant ? 'on important' : ''}}" bindtap="toggleImportant">重要</view>
+      <view class="flag {{formUrgent ? 'on urgent' : ''}}" bindtap="toggleUrgent">紧急</view>
+      <view class="flag-result" style="color: {{formQuadColor}};">→ {{formQuadName}}</view>
     </view>
 
-    <view wx:else class="add-hint">写好之后按键盘上的「完成」，也能直接添加</view>
+    <view class="due-row">
+      <picker mode="date" value="{{formDue || today}}" bindchange="onDue">
+        <view class="due-pick {{formDue ? 'has' : ''}}">{{formDue ? formDue : '＋ 截止日期'}}</view>
+      </picker>
+      <view wx:if="{{formDue}}" class="due-clear" hover-class="due-clear-hover" bindtap="clearDue">清除</view>
+    </view>
+
+    <view class="pop-actions">
+      <view class="px-btn" hover-class="px-btn-hover" bindtap="save">保存</view>
+      <view class="px-btn" hover-class="px-btn-hover" bindtap="closeEdit">取消</view>
+      <view class="px-btn pop-del" hover-class="px-btn-hover" bindtap="removeEditing">删除</view>
+    </view>
   </view>
-
-  <!-- 一条都没有 -->
-  <view wx:if="{{total === 0}}" class="empty">
-    <view class="empty-ico ico ico-todo"></view>
-    <view class="empty-text">今天还没有安排</view>
-    <view class="empty-sub">写一件小事开始吧</view>
-  </view>
-
-  <!-- 待完成 -->
-  <block wx:if="{{pending.length > 0}}">
-    <view class="group-head">
-      <view class="group-name">待完成</view>
-      <view class="group-count">{{pending.length}}</view>
-    </view>
-
-    <view
-      class="todo {{editingId === item.id ? 'todo-editing' : ''}}"
-      wx:for="{{pending}}"
-      wx:key="id"
-      hover-class="todo-hover"
-      data-id="{{item.id}}"
-      bindtap="toggle"
-      bindlongpress="edit"
-    >
-      <view class="box"></view>
-      <view class="todo-text">{{item.text}}</view>
-      <view class="edit" data-id="{{item.id}}" catchtap="edit">改</view>
-      <view class="del" data-id="{{item.id}}" catchtap="remove">✕</view>
-    </view>
-  </block>
-
-  <!-- 已完成 -->
-  <block wx:if="{{done.length > 0}}">
-    <view class="group-head">
-      <view class="group-name">已完成</view>
-      <view class="group-count group-count-done">{{done.length}}</view>
-    </view>
-
-    <view
-      class="todo todo-done {{editingId === item.id ? 'todo-editing' : ''}}"
-      wx:for="{{done}}"
-      wx:key="id"
-      hover-class="todo-hover"
-      data-id="{{item.id}}"
-      bindtap="toggle"
-      bindlongpress="edit"
-    >
-      <view class="box box-on">✓</view>
-      <view class="todo-text done">{{item.text}}</view>
-      <view class="edit" data-id="{{item.id}}" catchtap="edit">改</view>
-      <view class="del" data-id="{{item.id}}" catchtap="remove">✕</view>
-    </view>
-  </block>
-
-  <!-- 底部：像素草地 + 寄语 -->
-  <view class="page-foot">
-    <view class="grass-strip"></view>
-    <view class="end-note">今天也要加油呀</view>
-  </view>
-
-  <undo-bar show="{{undoShow}}" seq="{{undoSeq}}" text="{{undoText}}" bind:undo="onUndo" bind:close="onUndoClose" />
-
 </view>

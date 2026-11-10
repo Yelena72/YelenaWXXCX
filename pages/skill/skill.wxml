@@ -1,0 +1,81 @@
+<!-- pages/skill/skill.wxml —— 某个技能的小标题和描述 -->
+
+<view class="page-wrap">
+
+  <!-- 顶部：技能名 + 进度 -->
+  <view class="px-card head-card">
+    <view class="head-row">
+      <view class="head-bar" style="background-color: {{color}};"></view>
+      <view class="head-title">{{name}}</view>
+      <view class="head-pct" style="color: {{color}};">{{percent}}%</view>
+    </view>
+
+    <view class="bar">
+      <view class="fill" style="width: {{percent}}%; background-color: {{color}};"></view>
+    </view>
+
+    <view wx:if="{{note}}" class="head-note">{{note}}</view>
+    <view class="head-meta">共 {{subCount}} 个小标题</view>
+  </view>
+
+  <!-- 小标题列表 -->
+  <view
+    class="px-card sub"
+    wx:for="{{subs}}"
+    wx:key="id"
+    hover-class="px-card-hover"
+    data-id="{{item.id}}"
+    bindtap="editSub"
+  >
+    <view class="sub-title">{{item.title}}</view>
+    <view wx:if="{{item.desc}}" class="sub-desc">{{item.desc}}</view>
+    <view class="sub-del" data-id="{{item.id}}" catchtap="removeSub">✕</view>
+  </view>
+
+  <view wx:if="{{subCount === 0}}" class="empty">还没有小标题，点下面的按钮加一个</view>
+
+  <view class="add-sub" hover-class="add-sub-hover" bindtap="addSub">＋ 添加小标题</view>
+
+  <undo-bar show="{{undoShow}}" seq="{{undoSeq}}" text="{{undoText}}" bind:undo="onUndo" bind:close="onUndoClose" />
+
+</view>
+
+<!-- ================= 添加 / 修改小标题：屏幕中间的弹窗 ================= -->
+<view wx:if="{{editShow}}" class="pop-mask" style="padding-bottom: {{kbH}}px;" bindtap="closeEdit">
+  <view class="pop-dialog" catchtap="noop">
+    <view class="px-title">{{editingId ? '修改小标题' : '添加小标题'}}</view>
+
+    <input
+      class="field"
+      placeholder="小标题，比如：HTML"
+      placeholder-class="ph"
+      value="{{formTitle}}"
+      bindinput="onTitle"
+      maxlength="20"
+      cursor-spacing="24"
+      adjust-position="{{false}}"
+    />
+
+    <input
+      class="field"
+      placeholder="描述，比如：语义化标签、表单、表格"
+      placeholder-class="ph"
+      value="{{formDesc}}"
+      bindinput="onDesc"
+      maxlength="60"
+      cursor-spacing="24"
+      adjust-position="{{false}}"
+    />
+
+    <view class="form-actions">
+      <view class="px-btn form-btn" hover-class="px-btn-hover" bindtap="save">保存</view>
+      <view class="px-btn form-btn form-btn-ghost" hover-class="px-btn-hover" bindtap="closeEdit">取消</view>
+      <view
+        wx:if="{{editingId}}"
+        class="px-btn form-btn form-btn-del"
+        hover-class="px-btn-hover"
+        bindtap="removeEditing"
+      >删除</view>
+    </view>
+  </view>
+</view>

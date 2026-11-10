@@ -1,0 +1,42 @@
+<!-- pages/wish/wish.wxml —— 愿望详情 -->
+
+<view class="page-wrap">
+
+  <block wx:if="{{ok}}">
+
+    <view class="detail px-card">
+
+      <!-- 配图：自己的照片优先，否则用像素风景 -->
+      <view class="media" style="height: {{mediaH}}rpx;">
+        <image wx:if="{{wish.image}}" class="media-img" src="{{wish.image}}" mode="{{imgMode}}"></image>
+        <view wx:else class="media-art scene-art scene-{{wish.scene}}"></view>
+      </view>
+
+      <view class="body">
+        <view class="group" style="background-color: {{groupColor}};">{{groupName}}</view>
+
+        <view class="text">{{wish.text}}</view>
+
+        <view wx:if="{{wish.note}}" class="note">{{wish.note}}</view>
+
+        <view class="meta">
+          <view wx:if="{{wish.when}}" class="meta-row">
+            <text class="meta-label">时间</text>
+            <text class="meta-value">{{wish.when}}</text>
+          </view>
+          <view wx:if="{{!wish.image}}" class="meta-row">
+            <text class="meta-label">配图</text>
+            <text class="meta-value">{{sceneName}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="actions">
+      <view class="btn btn-ghost" hover-class="btn-hover" bindtap="goEdit">修改</view>
+      <view class="btn btn-danger" hover-class="btn-hover" bindtap="goDelete">删除</view>
+    </view>
+
+  </block>
+
+</view>

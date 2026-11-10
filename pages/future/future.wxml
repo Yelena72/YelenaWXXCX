@@ -27,11 +27,11 @@
       wx:key="id"
       hover-class="px-card-hover"
       data-id="{{w.id}}"
-      bindtap="editWish"
-      bindlongpress="removeWish"
+      bindtap="openWish"
+      bindlongpress="editWish"
     >
-      <view class="wish-media">
-        <image wx:if="{{w.image}}" class="wish-img" src="{{w.image}}" mode="aspectFill"></image>
+      <view class="wish-media" style="height: {{w.mediaH}}rpx;">
+        <image wx:if="{{w.image}}" class="wish-img" src="{{w.image}}" mode="{{w.imgMode}}"></image>
         <view wx:else class="wish-art scene-art scene-{{w.scene}}"></view>
         <view class="wish-no">{{w.no}}</view>
       </view>
@@ -47,7 +47,7 @@
   <!-- 添加按钮 -->
   <view class="add-wish" hover-class="add-wish-hover" bindtap="openForm">+ 添加一个展望</view>
 
-  <view class="wish-tip">点任意一张卡片可以修改，长按可以删除</view>
+  <view class="wish-tip">点卡片看详情，长按可以修改</view>
 
   <!-- 添加 / 修改表单 -->
   <view wx:if="{{showForm}}" class="mask" bindtap="closeForm">
